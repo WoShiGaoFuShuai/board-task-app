@@ -1,7 +1,14 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
 	"html": {
-		"experimentalFullSupportEnabled": true
+		"experimentalFullSupportEnabled": true,
+		"formatter": {
+			"enabled": true,
+			"indentStyle": "tab",
+			"indentWidth": 4,
+			"lineWidth": 150,
+			"indentScriptAndStyle": true
+		}
 	},
 	"vcs": {
 		"enabled": true,
@@ -9,14 +16,13 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"includes": ["src/**/*.vue"]
+		"includes": ["src/**", "*.config.{js,ts,mjs,cjs}", "vite.config.*"]
 	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
 		"indentWidth": 4,
-		"lineWidth": 150,
-		"includes": ["src/**/*.vue"]
+		"lineWidth": 150
 	},
 	"linter": {
 		"enabled": true,
@@ -29,8 +35,7 @@
 			"suspicious": {
 				"noExplicitAny": "warn"
 			}
-		},
-		"includes": ["src/**/*.vue"]
+		}
 	},
 	"javascript": {
 		"formatter": {
