@@ -6,8 +6,9 @@
 			"enabled": true,
 			"indentStyle": "tab",
 			"indentWidth": 4,
-			"lineWidth": 150,
-			"indentScriptAndStyle": true
+			"lineWidth": 120,
+			"indentScriptAndStyle": true,
+			"attributePosition": "multiline"
 		}
 	},
 	"vcs": {
