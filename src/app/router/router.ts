@@ -1,9 +1,13 @@
-import BoardPage from '@pages/board-page.vue';
-import { createMemoryHistory, createRouter } from 'vue-router';
+import { BoardPage } from '@pages/board-page';
+import { MainPage } from '@pages/main-page';
+import { createRouter, createWebHistory } from 'vue-router';
 
-const routes = [{ path: '/', component: BoardPage }];
+const routes = [
+	{ path: '/', component: MainPage, name: 'main' },
+	{ path: '/board/:id', component: BoardPage, name: 'board' },
+];
 
 export const router = createRouter({
-	history: createMemoryHistory(),
+	history: createWebHistory(),
 	routes,
 });
