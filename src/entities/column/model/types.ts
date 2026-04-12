@@ -1,6 +1,5 @@
 export interface Column {
-    id: string;
-    title: string;
-    taskIds: string[];
-    boardId: string;
+	id: string;
+	title: string;
+	taskIds: string[];
 }
