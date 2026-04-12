@@ -28,7 +28,6 @@
 	import { computed, onUnmounted, watchEffect } from 'vue';
 	import { useRoute } from 'vue-router';
 
-	//TODO: CHECK ALL types => make them export from index!!!
 	const route = useRoute();
 	const boardStore = useBoardStore();
 	const { setCurrentBoardId, resetCurrentBoardId } = boardStore;
