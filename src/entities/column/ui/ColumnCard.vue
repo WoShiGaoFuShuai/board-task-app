@@ -14,7 +14,16 @@
 			>
 				No tasks yet
 			</div>
-			<!-- TODO: task cards will go here -->
+			<div
+				v-else
+				class="flex flex-col gap-2"
+			>
+				<TaskCard
+					v-for="task in columnsTasks"
+					:key="task.id"
+					:task
+				/>
+			</div>
 		</div>
 
 		<div class="column-footer">
@@ -33,11 +42,17 @@
 	setup
 	lang="ts"
 >
+	import { TaskCard, useTaskStore } from '@entities/task';
+	import { computed } from 'vue';
 	import type { Column } from '../model/types.ts';
 
-	defineProps<{
+	const { getTasksByIds } = useTaskStore();
+
+	const props = defineProps<{
 		column: Column;
 	}>();
+
+	const columnsTasks = computed(() => getTasksByIds(props.column.taskIds));
 </script>
 
 <style scoped>
@@ -56,7 +71,7 @@
 		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 	}
 
-.column-title {
+	.column-title {
 		font-size: 13px;
 		font-weight: 600;
 		color: var(--colors-surface-300);
