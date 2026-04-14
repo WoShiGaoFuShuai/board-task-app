@@ -1,11 +1,23 @@
 <template>
-	<section v-if="currentBoard">
-		<div v-if="currentBoard.title">{{ currentBoard.title }}</div>
+	<section
+		v-if="currentBoard"
+		class="board-page"
+	>
+		<div class="board-header">
+			<h1 class="board-title">{{ currentBoard.title }}</h1>
+		</div>
 
-		<section v-if="!boardColumns.length">Don't have columns yes. Add them!</section>
+		<section
+			v-if="!boardColumns.length"
+			class="board-empty"
+		>
+			<div class="i-lucide-columns-3 text-3xl text-surface-600 mb-3" />
+			<p class="text-surface-500 text-sm">No columns yet. Add them to get started!</p>
+		</section>
+
 		<section
 			v-else
-			class="flex gap-4"
+			class="board-columns"
 		>
 			<ColumnCard
 				v-for="col in boardColumns"
@@ -14,8 +26,14 @@
 			/>
 		</section>
 	</section>
-	<!--    //TODO: зробити редірект на 404 чи fallback?  -->
-	<section v-else>Sorry, cant find the board</section>
+
+	<section
+		v-else
+		class="board-not-found"
+	>
+		<div class="i-lucide-search-x text-3xl text-surface-600 mb-3" />
+		<p class="text-surface-500 text-sm">Sorry, can't find the board</p>
+	</section>
 </template>
 
 <script
@@ -51,4 +69,40 @@
 </script>
 
 <style scoped>
+	.board-page {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		background-color: var(--colors-depth-2);
+	}
+
+	.board-header {
+		padding: 20px 24px 16px;
+	}
+
+	.board-title {
+		font-size: 18px;
+		font-weight: 600;
+		color: #fff;
+		margin: 0;
+	}
+
+	.board-columns {
+		display: flex;
+		gap: 16px;
+		flex: 1;
+		padding: 0 24px 24px;
+		overflow-x: auto;
+		align-items: flex-start;
+	}
+
+	.board-empty,
+	.board-not-found {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+		padding: 48px 24px;
+	}
 </style>
