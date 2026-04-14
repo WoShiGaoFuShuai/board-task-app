@@ -14,6 +14,11 @@ export const useBoardStore = defineStore('board', () => {
 			title: 'Marketing Campaign',
 			columnIds: ['col-4', 'col-5'],
 		},
+		{
+			id: 'board-3',
+			title: 'Other Tasks',
+			columnIds: [],
+		},
 	]);
 
 	const currentBoardId = ref<null | string>(null);

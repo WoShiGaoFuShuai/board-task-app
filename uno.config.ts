@@ -6,7 +6,7 @@ export default defineConfig({
 	presets: [presetWind4(), presetIcons()],
 
 	// Trigger CSS variable generation for colors used only in <style scoped>
-	safelist: ['bg-depth-1', 'text-surface-400'],
+	safelist: ['bg-depth-1', 'bg-depth-2', 'bg-depth-3', 'text-surface-300', 'text-surface-400', 'text-surface-500', 'text-surface-600'],
 
 	theme: {
 		colors: {
