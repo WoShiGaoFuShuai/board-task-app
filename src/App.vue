@@ -9,5 +9,5 @@
 	setup
 	lang="ts"
 >
-	import Sidebar from './widgets/sidebar/ui/Sidebar.vue';
+	import { Sidebar } from '@widgets/sidebar';
 </script>
