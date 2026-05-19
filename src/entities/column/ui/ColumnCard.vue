@@ -3,13 +3,13 @@
 		<div class="column-header">
 			<div class="flex items-center justify-between">
 				<span class="column-title">{{ column.title }}</span>
-				<span class="column-count">{{ column.taskIds.length }}</span>
+				<span class="column-count">{{ columnsTasks.length }}</span>
 			</div>
 		</div>
 
 		<div class="column-body">
 			<div
-				v-if="!column.taskIds.length"
+				v-if="!columnsTasks.length"
 				class="column-empty"
 			>
 				No tasks yet
