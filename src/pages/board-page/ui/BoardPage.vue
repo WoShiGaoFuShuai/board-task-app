@@ -7,6 +7,8 @@
 			<h1 class="board-title">{{ currentBoard.title }}</h1>
 		</div>
 
+		<FilterBar />
+
 		<section
 			v-if="!boardColumns.length"
 			class="board-empty"
@@ -42,6 +44,7 @@
 >
 	import { useBoardStore } from '@entities/board';
 	import { ColumnCard, useColumnStore } from '@entities/column';
+	import { FilterBar } from '@widgets/FilterBar';
 	import { storeToRefs } from 'pinia';
 	import { computed, onUnmounted, watchEffect } from 'vue';
 	import { useRoute } from 'vue-router';
