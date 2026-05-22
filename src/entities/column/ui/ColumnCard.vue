@@ -3,23 +3,23 @@
 		<div class="column-header">
 			<div class="flex items-center justify-between">
 				<span class="column-title">{{ column.title }}</span>
-				<span class="column-count">{{ columnsTasks.length }}</span>
+				<span class="column-count">{{ tasks.length }}</span>
 			</div>
 		</div>
 
 		<div class="column-body">
 			<div
-				v-if="!columnsTasks.length"
+				v-if="!tasks.length"
 				class="column-empty"
 			>
-				No tasks yet
+				<slot name="empty">No tasks yet</slot>
 			</div>
 			<div
 				v-else
 				class="flex flex-col gap-2"
 			>
 				<TaskCard
-					v-for="task in columnsTasks"
+					v-for="task in tasks"
 					:key="task.id"
 					:task
 				/>
@@ -42,17 +42,13 @@
 	setup
 	lang="ts"
 >
-	import { TaskCard, useTaskStore } from '@entities/task';
-	import { computed } from 'vue';
+	import { type Task, TaskCard } from '@entities/task';
 	import type { Column } from '../model/types.ts';
 
-	const { getTasksByIds } = useTaskStore();
-
-	const props = defineProps<{
+	defineProps<{
 		column: Column;
+		tasks: Task[];
 	}>();
-
-	const columnsTasks = computed(() => getTasksByIds(props.column.taskIds));
 </script>
 
 <style scoped>

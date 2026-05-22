@@ -6,6 +6,7 @@
 			class="search-field"
 			placeholder="Search"
 			aria-label="Search"
+			v-model="model"
 		>
 	</div>
 </template>
@@ -14,6 +15,7 @@
 	setup
 	lang="ts"
 >
+	const model = defineModel<string>({ default: '' });
 </script>
 
 <style scoped>

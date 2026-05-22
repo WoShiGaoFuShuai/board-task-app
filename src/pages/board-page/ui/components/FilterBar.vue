@@ -1,5 +1,5 @@
 <template>
-	<SearchInput />
+	<SearchInput v-model="model" />
 </template>
 
 <script
@@ -7,6 +7,8 @@
 	lang="ts"
 >
 	import { SearchInput } from '@shared/ui/SearchInput';
+
+	const model = defineModel<string>({ default: '' });
 </script>
 
 <style scoped>

@@ -7,7 +7,7 @@
 			<h1 class="board-title">{{ currentBoard.title }}</h1>
 		</div>
 
-		<FilterBar />
+		<FilterBar v-model="query" />
 
 		<section
 			v-if="!boardColumns.length"
@@ -21,10 +21,9 @@
 			v-else
 			class="board-columns"
 		>
-			<ColumnCard
-				v-for="col in boardColumns"
-				:key="col.id"
-				:column="col"
+			<ColumnList
+				:boardColumns="boardColumns"
+				:query="queryDebounced"
 			/>
 		</section>
 	</section>
@@ -43,11 +42,13 @@
 	lang="ts"
 >
 	import { useBoardStore } from '@entities/board';
-	import { ColumnCard, useColumnStore } from '@entities/column';
-	import { FilterBar } from '@widgets/FilterBar';
+	import { useColumnStore } from '@entities/column';
+	import { refDebounced } from '@vueuse/core';
 	import { storeToRefs } from 'pinia';
-	import { computed, onUnmounted, watchEffect } from 'vue';
+	import { computed, onUnmounted, ref, watchEffect } from 'vue';
 	import { useRoute } from 'vue-router';
+	import ColumnList from './components/ColumnList.vue';
+	import FilterBar from './components/FilterBar.vue';
 
 	const route = useRoute();
 	const boardStore = useBoardStore();
@@ -69,6 +70,9 @@
 	onUnmounted(() => resetCurrentBoardId());
 
 	const boardColumns = computed(() => getColumnsByIds(currentBoard.value?.columnIds));
+
+	const query = ref('');
+    const queryDebounced = refDebounced(query, 200)
 </script>
 
 <style scoped>
