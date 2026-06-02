@@ -28,8 +28,7 @@
 			class="board-columns"
 		>
 			<ColumnList
-				:boardColumns="boardColumns"
-				:filterTasks
+				:columns="columns"
 				:isAnyFilterActive
 			/>
 		</section>
@@ -50,6 +49,7 @@
 >
 	import { useBoardStore } from '@entities/board';
 	import { useColumnStore } from '@entities/column';
+	import { useTaskStore } from '@entities/task';
 	import { useFilter } from '@features/FilterPanel';
 	import { storeToRefs } from 'pinia';
 	import { computed, onUnmounted, watchEffect } from 'vue';
@@ -62,6 +62,7 @@
 	const { setCurrentBoardId, resetCurrentBoardId } = boardStore;
 	const { currentBoard } = storeToRefs(boardStore);
 	const { getColumnsByIds } = useColumnStore();
+	const { getTasksByIds } = useTaskStore();
 
 	const paramsId = computed(() => {
 		const id = route.params.id;
@@ -80,6 +81,19 @@
 
 	const { query, activeFilters, toggleFilter, resetActiveFilters, hasActiveFilters, filterTasks, isAnyFilterActive } =
 		useFilter();
+
+	const columns = computed(() =>
+		boardColumns.value.map((column) => {
+			const allTasks = getTasksByIds(column.taskIds);
+
+			const tasks = filterTasks(allTasks);
+
+			return {
+				column,
+				tasks,
+			};
+		})
+	);
 </script>
 
 <style scoped>
