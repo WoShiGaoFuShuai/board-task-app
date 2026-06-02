@@ -10,11 +10,14 @@ export default defineConfig({
 		'bg-depth-1',
 		'bg-depth-2',
 		'bg-depth-3',
+		'text-surface-100',
 		'text-surface-200',
 		'text-surface-300',
 		'text-surface-400',
 		'text-surface-500',
 		'text-surface-600',
+		'text-primary-300',
+		'text-primary-400',
 	],
 
 	theme: {
