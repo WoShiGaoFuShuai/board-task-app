@@ -7,16 +7,14 @@
 			<slot name="trigger" />
 		</div>
 		<Teleport to="body">
-			<Transition>
-				<div
-					v-if="isOpen"
-					ref="popoverRef"
-					class="popover-panel"
-					:style="floatingStyles"
-				>
-					<slot />
-				</div>
-			</Transition>
+			<div
+				v-if="isOpen"
+				ref="popoverRef"
+				class="popover-panel"
+				:style="floatingStyles"
+			>
+				<slot />
+			</div>
 		</Teleport>
 	</div>
 </template>
