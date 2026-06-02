@@ -7,7 +7,13 @@
 			<h1 class="board-title">{{ currentBoard.title }}</h1>
 		</div>
 
-		<FilterBar v-model="query" />
+		<FilterBar
+			v-model="query"
+			@toggle-filter="toggleFilter($event)"
+			@reset-filters="resetActiveFilters"
+			:hasActiveFilters
+			:activeFilters
+		/>
 
 		<section
 			v-if="!boardColumns.length"
@@ -23,7 +29,8 @@
 		>
 			<ColumnList
 				:boardColumns="boardColumns"
-				:query="queryDebounced"
+				:filterTasks
+				:isAnyFilterActive
 			/>
 		</section>
 	</section>
@@ -43,9 +50,9 @@
 >
 	import { useBoardStore } from '@entities/board';
 	import { useColumnStore } from '@entities/column';
-	import { refDebounced } from '@vueuse/core';
+	import { useFilter } from '@features/FilterPanel';
 	import { storeToRefs } from 'pinia';
-	import { computed, onUnmounted, ref, watchEffect } from 'vue';
+	import { computed, onUnmounted, watchEffect } from 'vue';
 	import { useRoute } from 'vue-router';
 	import ColumnList from './components/ColumnList.vue';
 	import FilterBar from './components/FilterBar.vue';
@@ -71,8 +78,8 @@
 
 	const boardColumns = computed(() => getColumnsByIds(currentBoard.value?.columnIds));
 
-	const query = ref('');
-    const queryDebounced = refDebounced(query, 200)
+	const { query, activeFilters, toggleFilter, resetActiveFilters, hasActiveFilters, filterTasks, isAnyFilterActive } =
+		useFilter();
 </script>
 
 <style scoped>
