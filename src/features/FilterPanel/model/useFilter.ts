@@ -21,7 +21,9 @@ export const useFilter = () => {
 		else list.splice(idx, 1);
 	};
 
-	const resetActiveFilters = () => (activeFilters.value = { priority: [], status: [] });
+	const resetActiveFilters = () => {
+		activeFilters.value = { priority: [], status: [] };
+	};
 
 	const hasActiveFilters = computed(() => Object.values(activeFilters.value).some((arr) => arr.length > 0));
 
