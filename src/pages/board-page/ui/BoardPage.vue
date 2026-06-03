@@ -13,6 +13,7 @@
 			@reset-filters="resetActiveFilters"
 			:hasActiveFilters
 			:activeFilters
+            class="board-filter-bar"
 		/>
 
 		<section
@@ -102,10 +103,11 @@
 		flex-direction: column;
 		height: 100%;
 		background-color: var(--colors-depth-2);
+		padding: 20px 24px;
 	}
 
 	.board-header {
-		padding: 20px 24px 16px;
+		margin-bottom: 16px;
 	}
 
 	.board-title {
@@ -115,11 +117,14 @@
 		margin: 0;
 	}
 
+    .board-filter-bar {
+        margin-bottom: 8px;
+    }
+
 	.board-columns {
 		display: flex;
 		gap: 16px;
 		flex: 1;
-		padding: 0 24px 24px;
 		overflow-x: auto;
 		align-items: flex-start;
 	}
