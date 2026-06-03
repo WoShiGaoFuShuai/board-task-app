@@ -7,6 +7,7 @@
 			placeholder="Search"
 			aria-label="Search"
 			v-model="model"
+			ref="inputRef"
 		>
 	</div>
 </template>
@@ -15,7 +16,21 @@
 	setup
 	lang="ts"
 >
+	import { onClickOutside } from '@vueuse/core';
+	import { onMounted, useTemplateRef } from 'vue';
+
+	const emit = defineEmits<{
+		clickOutside: [];
+	}>();
+
 	const model = defineModel<string>({ default: '' });
+
+	const inputRef = useTemplateRef<HTMLInputElement>('inputRef');
+	onClickOutside(inputRef, () => emit('clickOutside'));
+
+	onMounted(() => {
+		inputRef.value?.focus();
+	});
 </script>
 
 <style scoped>
@@ -34,6 +49,7 @@
 
 	.search-field {
 		width: 100%;
+		height: var(--spacing-control);
 		padding: 8px 12px 8px 32px;
 		border: 1px solid rgba(255, 255, 255, 0.06);
 		border-radius: 8px;
