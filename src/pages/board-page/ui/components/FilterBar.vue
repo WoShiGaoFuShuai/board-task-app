@@ -29,6 +29,7 @@
 		<ButtonIcon
 			v-else
 			iconClass="i-lucide-search text-sm text-surface-500"
+            ariaLabel="Search tasks"
 			@click="isSearchActive = true"
 		/>
 	</div>
