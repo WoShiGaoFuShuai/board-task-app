@@ -3,8 +3,8 @@
 		<Popover v-model="isPopoverOpen">
 			<template #trigger>
 				<ButtonIcon
-					class="i-lucide-list-filter text-sm text-surface-300"
-					ariaLabel="Filter"
+                    iconClass="i-lucide-list-filter text-sm text-surface-300"
+                    ariaLabel="Filter"
 				/>
 			</template>
 
@@ -15,7 +15,23 @@
 				:activeFilters
 			/>
 		</Popover>
-		<SearchInput v-model="modelQuery" />
+
+		<div
+			class="w-60"
+			v-if="isSearchActive"
+		>
+			<SearchInput
+				v-model="modelQuery"
+				@click-outside="isSearchActive = false"
+			/>
+		</div>
+
+		<ButtonIcon
+			v-else
+			iconClass="i-lucide-search text-sm text-surface-500"
+            ariaLabel="Search tasks"
+			@click="isSearchActive = true"
+		/>
 	</div>
 </template>
 
@@ -42,6 +58,8 @@
 		hasActiveFilters: boolean;
 		activeFilters: ActiveFilters;
 	}>();
+
+	const isSearchActive = ref(false);
 </script>
 
 <style scoped>

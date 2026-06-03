@@ -3,7 +3,7 @@
 		type="button"
 		:aria-label="ariaLabel"
 	>
-		<span v-bind="$attrs" />
+		<span :class="iconClass" />
 	</button>
 </template>
 
@@ -11,12 +11,9 @@
 	setup
 	lang="ts"
 >
-	defineOptions({
-		inheritAttrs: false,
-	});
-
 	defineProps<{
-		ariaLabel: string | undefined;
+		ariaLabel?: string;
+        iconClass: string;
 	}>();
 </script>
 
@@ -26,8 +23,8 @@
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		width: 34px;
-		height: 34px;
+		width: var(--spacing-control);
+		height: var(--spacing-control);
 		border: 1px solid rgba(255, 255, 255, 0.06);
 		border-radius: 8px;
 		background-color: var(--colors-depth-2);

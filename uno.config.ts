@@ -76,5 +76,8 @@ export default defineConfig({
 		fontFamily: {
 			sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
 		},
+		spacing: {
+			control: '36px',
+		},
 	},
 });
