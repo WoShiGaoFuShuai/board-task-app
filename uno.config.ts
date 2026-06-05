@@ -18,6 +18,8 @@ export default defineConfig({
 		'text-surface-600',
 		'text-primary-300',
 		'text-primary-400',
+		'w-control',
+		'h-control',
 	],
 
 	theme: {
