@@ -20,6 +20,8 @@ export default defineConfig({
 		'text-primary-400',
 		'w-control',
 		'h-control',
+		'w-control-s',
+		'h-control-s',
 	],
 
 	theme: {
@@ -79,6 +81,7 @@ export default defineConfig({
 			sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
 		},
 		spacing: {
+			'control-s': '28px',
 			control: '36px',
 		},
 	},
