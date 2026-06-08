@@ -1,5 +1,8 @@
 <template>
-	<div class="task-card">
+	<div
+		class="task-card"
+		@click="onTaskClick?.(task.id)"
+	>
 		<h5 class="task-title">{{ task.title }}</h5>
 
 		<div class="task-meta">
@@ -39,8 +42,10 @@
 	setup
 	lang="ts"
 >
-	import { computed } from 'vue';
+	import { computed, inject } from 'vue';
 	import type { Task } from '../model/types.ts';
+
+	const onTaskClick = inject<(id: string) => void>('onTaskClick');
 
 	const props = defineProps<{
 		task: Task;
