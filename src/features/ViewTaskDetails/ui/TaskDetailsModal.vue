@@ -35,8 +35,6 @@
 			</span>
 		</div>
 
-		<div class="divider" />
-
 		<section class="modal-body">
 			<h3 class="section-label">
 				<div class="i-lucide-align-left text-xs" />
@@ -44,8 +42,6 @@
 			</h3>
 			<p class="description">{{ task.description }}</p>
 		</section>
-
-		<div class="divider" />
 
 		<section class="meta-section">
 			<div class="meta-row">
@@ -107,7 +103,6 @@
 	.task-details-modal {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
 		width: min(560px, calc(100vw - 32px));
 		padding: 20px 24px;
 		background-color: var(--colors-depth-2);
@@ -120,6 +115,7 @@
 		align-items: flex-start;
 		justify-content: space-between;
 		gap: 12px;
+		margin-bottom: 16px;
 	}
 
 	.modal-title-block {
@@ -138,10 +134,13 @@
 	}
 
 	.chips-row {
+		position: relative;
 		display: flex;
 		align-items: center;
 		gap: 8px;
 		flex-wrap: wrap;
+		padding-bottom: 16px;
+		margin-bottom: 16px;
 	}
 
 	.chip {
@@ -192,9 +191,25 @@
 	}
 
 	.modal-body {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
+		padding-bottom: 16px;
+		margin-bottom: 16px;
+	}
+
+	.chips-row,
+	.modal-body {
+		&::after {
+			content: "";
+			position: absolute;
+			height: 1px;
+			background-color: rgba(255, 255, 255, 0.06);
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
 	}
 
 	.section-label {
