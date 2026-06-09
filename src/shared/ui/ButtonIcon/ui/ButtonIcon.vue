@@ -2,6 +2,7 @@
 	<button
 		type="button"
 		:aria-label="ariaLabel"
+		:class="[size, type, br]"
 	>
 		<span :class="iconClass" />
 	</button>
@@ -11,10 +12,21 @@
 	setup
 	lang="ts"
 >
-	defineProps<{
+	import { ButtonBorderRadius, ButtonSize, ButtonType } from '../model/constants.ts';
+
+	interface ButtonIconsProps {
 		ariaLabel?: string;
-        iconClass: string;
-	}>();
+		iconClass: string;
+		type?: ButtonType;
+		size?: ButtonSize;
+		br?: ButtonBorderRadius;
+	}
+
+	withDefaults(defineProps<ButtonIconsProps>(), {
+		type: ButtonType.OUTLINE,
+		size: ButtonSize.M,
+		br: ButtonBorderRadius.M,
+	});
 </script>
 
 <style scoped>
@@ -23,10 +35,6 @@
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		width: var(--spacing-control);
-		height: var(--spacing-control);
-		border: 1px solid rgba(255, 255, 255, 0.06);
-		border-radius: 8px;
 		background-color: var(--colors-depth-2);
 		color: var(--colors-surface-300);
 		cursor: pointer;
@@ -44,5 +52,35 @@
 	button:focus-visible {
 		outline: none;
 		border-color: var(--colors-primary-400);
+	}
+
+	.type_default {
+		border: none;
+	}
+
+	.type_outline {
+		border: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.border_n {
+		border-radius: 0;
+	}
+
+	.border_m {
+		border-radius: 8px;
+	}
+
+	.border-f {
+		border-radius: 50%;
+	}
+
+	.size_s {
+		width: var(--spacing-control-s);
+		height: var(--spacing-control-s);
+	}
+
+	.size_m {
+		width: var(--spacing-control);
+		height: var(--spacing-control);
 	}
 </style>

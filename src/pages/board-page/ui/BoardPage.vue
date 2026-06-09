@@ -1,46 +1,50 @@
 <template>
-	<section
-		v-if="currentBoard"
-		class="board-page"
-	>
-		<div class="board-header">
-			<h1 class="board-title">{{ currentBoard.title }}</h1>
-		</div>
-
-		<FilterBar
-			v-model="query"
-			@toggle-filter="toggleFilter($event)"
-			@reset-filters="resetActiveFilters"
-			:hasActiveFilters
-			:activeFilters
-            class="board-filter-bar"
-		/>
-
+	<section>
 		<section
-			v-if="!boardColumns.length"
-			class="board-empty"
+			v-if="currentBoard"
+			class="board-page"
 		>
-			<div class="i-lucide-columns-3 text-3xl text-surface-600 mb-3" />
-			<p class="text-surface-500 text-sm">No columns yet. Add them to get started!</p>
+			<div class="board-header">
+				<h1 class="board-title">{{ currentBoard.title }}</h1>
+			</div>
+
+			<FilterBar
+				v-model="query"
+				@toggle-filter="toggleFilter($event)"
+				@reset-filters="resetActiveFilters"
+				:hasActiveFilters
+				:activeFilters
+				class="board-filter-bar"
+			/>
+
+			<section
+				v-if="!boardColumns.length"
+				class="board-empty"
+			>
+				<div class="i-lucide-columns-3 text-3xl text-surface-600 mb-3" />
+				<p class="text-surface-500 text-sm">No columns yet. Add them to get started!</p>
+			</section>
+
+			<section
+				v-else
+				class="board-columns"
+			>
+				<ColumnList
+					:columns="columns"
+					:isAnyFilterActive
+				/>
+			</section>
 		</section>
 
 		<section
 			v-else
-			class="board-columns"
+			class="board-not-found"
 		>
-			<ColumnList
-				:columns="columns"
-				:isAnyFilterActive
-			/>
+			<div class="i-lucide-search-x text-3xl text-surface-600 mb-3" />
+			<p class="text-surface-500 text-sm">Sorry, can't find the board</p>
 		</section>
-	</section>
 
-	<section
-		v-else
-		class="board-not-found"
-	>
-		<div class="i-lucide-search-x text-3xl text-surface-600 mb-3" />
-		<p class="text-surface-500 text-sm">Sorry, can't find the board</p>
+		<ViewTaskDetails />
 	</section>
 </template>
 
@@ -52,8 +56,9 @@
 	import { useColumnStore } from '@entities/column';
 	import { useTaskStore } from '@entities/task';
 	import { useFilter } from '@features/FilterPanel';
+	import { useViewTaskDetailsStore, ViewTaskDetails } from '@features/ViewTaskDetails';
 	import { storeToRefs } from 'pinia';
-	import { computed, onUnmounted, watchEffect } from 'vue';
+	import { computed, onUnmounted, provide, watchEffect } from 'vue';
 	import { useRoute } from 'vue-router';
 	import ColumnList from './components/ColumnList.vue';
 	import FilterBar from './components/FilterBar.vue';
@@ -64,6 +69,7 @@
 	const { currentBoard } = storeToRefs(boardStore);
 	const { getColumnsByIds } = useColumnStore();
 	const { getTasksByIds } = useTaskStore();
+	const viewTaskDetailsStore = useViewTaskDetailsStore();
 
 	const paramsId = computed(() => {
 		const id = route.params.id;
@@ -95,6 +101,11 @@
 			};
 		})
 	);
+
+	const handleTaskClicked = (id: string) => {
+		viewTaskDetailsStore.open(id);
+	};
+	provide('onTaskClick', handleTaskClicked);
 </script>
 
 <style scoped>
@@ -117,9 +128,9 @@
 		margin: 0;
 	}
 
-    .board-filter-bar {
-        margin-bottom: 8px;
-    }
+	.board-filter-bar {
+		margin-bottom: 8px;
+	}
 
 	.board-columns {
 		display: flex;

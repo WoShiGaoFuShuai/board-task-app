@@ -57,6 +57,10 @@ export const useTaskStore = defineStore('task', () => {
 		},
 	]);
 
+	const getTaskById = (id: string): Task | null => {
+		return tasks.value.find((task) => task.id === id) ?? null;
+	};
+
 	const getTasksByIds = (ids: string[] | undefined): Task[] => {
 		if (!ids) return [];
 
@@ -65,5 +69,5 @@ export const useTaskStore = defineStore('task', () => {
 			.filter((mappedItem: Task | undefined) => mappedItem !== undefined);
 	};
 
-	return { getTasksByIds };
+	return { getTasksByIds, getTaskById };
 });
