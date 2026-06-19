@@ -3,28 +3,11 @@
 		<div class="column-header">
 			<div class="flex items-center justify-between">
 				<span class="column-title">{{ column.title }}</span>
-				<span class="column-count">{{ tasks.length }}</span>
+				<span class="column-count">{{ tasksAmount }}</span>
 			</div>
 		</div>
 
-		<div class="column-body">
-			<div
-				v-if="!tasks.length"
-				class="column-empty"
-			>
-				<slot name="empty">No tasks yet</slot>
-			</div>
-			<div
-				v-else
-				class="flex flex-col gap-2"
-			>
-				<TaskCard
-					v-for="task in tasks"
-					:key="task.id"
-					:task
-				/>
-			</div>
-		</div>
+		<slot name="column-body"></slot>
 
 		<div class="column-footer">
 			<button
@@ -42,12 +25,11 @@
 	setup
 	lang="ts"
 >
-	import { type Task, TaskCard } from '@entities/task';
 	import type { Column } from '../model/types.ts';
 
 	defineProps<{
 		column: Column;
-		tasks: Task[];
+		tasksAmount: number;
 	}>();
 </script>
 
@@ -82,24 +64,6 @@
 		background-color: rgba(255, 255, 255, 0.06);
 		padding: 1px 8px;
 		border-radius: 10px;
-	}
-
-	.column-body {
-		flex: 1;
-		overflow-y: auto;
-		padding: 8px;
-		display: flex;
-		flex-direction: column;
-		gap: 6px;
-	}
-
-	.column-empty {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 24px 12px;
-		color: var(--colors-surface-600);
-		font-size: 13px;
 	}
 
 	.column-footer {
