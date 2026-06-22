@@ -7,6 +7,7 @@
 	>
 		<template #column-body>
 			<DraggableTaskList
+				:column-id="column.id"
 				:tasks
 				:emptyPhrase
 			/>

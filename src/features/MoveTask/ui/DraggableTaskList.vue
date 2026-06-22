@@ -27,11 +27,32 @@
 	lang="ts"
 >
 	import { type Task, TaskCard } from '@entities/task';
+	import { useTemplateRef } from 'vue';
+	import { useDraggable } from 'vue-draggable-plus';
+	import { useMoveTaskStore } from '../model/store.ts';
 
-	defineProps<{
+	const props = defineProps<{
 		tasks: Task[];
 		emptyPhrase: string;
+		columnId: string;
 	}>();
+
+	const parentWrapperRef = useTemplateRef<HTMLElement | null>('dragRef');
+
+	const { moveTask } = useMoveTaskStore();
+
+	useDraggable(parentWrapperRef, {
+		animation: 150,
+		ghostClass: 'ghost',
+		onEnd(e) {
+			const { oldDraggableIndex, newDraggableIndex } = e;
+
+			if (oldDraggableIndex == null || newDraggableIndex == null) return;
+			if (oldDraggableIndex === newDraggableIndex) return;
+
+			moveTask({ columnId: props.columnId, oldIndex: oldDraggableIndex, newIndex: newDraggableIndex });
+		},
+	});
 </script>
 
 <style scoped>
