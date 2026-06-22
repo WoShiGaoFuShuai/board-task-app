@@ -1,11 +1,17 @@
 <template>
 	<ColumnCard
-		v-for="{column, tasks} in columns"
+		v-for="{ column, tasks } in columns"
 		:key="column.id"
 		:column
-		:tasks
+		:tasksAmount="tasks.length"
 	>
-		<template #empty> {{ isAnyFilterActive ? 'No filtered tasks' : 'No tasks yet' }} </template>
+		<template #column-body>
+			<DraggableTaskList
+				:column-id="column.id"
+				:tasks
+				:emptyPhrase
+			/>
+		</template>
 	</ColumnCard>
 </template>
 
@@ -15,9 +21,13 @@
 >
 	import { type Column, ColumnCard } from '@entities/column';
 	import type { Task } from '@entities/task';
+	import { DraggableTaskList } from '@features/MoveTask';
+	import { computed } from 'vue';
 
-	defineProps<{
+	const props = defineProps<{
 		columns: { column: Column; tasks: Task[] }[];
 		isAnyFilterActive: boolean;
 	}>();
+
+	const emptyPhrase = computed(() => (props.isAnyFilterActive ? 'No filtered tasks' : 'No tasks yet'));
 </script>

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Column } from './types';
+import type { ChangeTaskOrderPayload, Column } from './types';
 
 export const useColumnStore = defineStore('column', () => {
 	const columns = ref<Column[]>([
@@ -34,7 +34,24 @@ export const useColumnStore = defineStore('column', () => {
 	const getColumnsByIds = (ids: string[] | undefined): Column[] => {
 		if (!ids) return [];
 
-		return ids.map((colId: string) => columns.value.find((c: Column) => c.id === colId)).filter((c: Column | undefined) => c !== undefined);
+		return ids
+			.map((colId: string) => columns.value.find((c: Column) => c.id === colId))
+			.filter((c: Column | undefined) => c !== undefined);
 	};
-	return { getColumnsByIds };
+
+	const changeTaskOrder = (payload: ChangeTaskOrderPayload) => {
+		const { columnId, newIndex, oldIndex } = payload;
+
+		if (!columnId) return [];
+
+		const column = columns.value.find((col) => col.id === columnId);
+		if (!column) return [];
+
+		const [draggableItem] = column.taskIds.splice(oldIndex, 1);
+		if (!draggableItem) return [];
+
+		column?.taskIds.splice(newIndex, 0, draggableItem);
+	};
+
+	return { getColumnsByIds, changeTaskOrder };
 });
