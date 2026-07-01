@@ -48,16 +48,6 @@
 		position: relative;
 	}
 
-	.column-body-tasks {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		flex: 1;
-		overflow-y: auto;
-		padding: 8px;
-		min-height: 70px;
-	}
-
 	.column-empty {
 		display: flex;
 		align-items: center;

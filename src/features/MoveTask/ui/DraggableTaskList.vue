@@ -2,6 +2,7 @@
 	<div
 		ref="dragRef"
 		:data-column-id="columnId"
+		class="task-list"
 	>
 		<TaskCard
 			v-for="task in tasks"
@@ -51,5 +52,15 @@
 	.ghost {
 		opacity: 0.5;
 		background: #c8ebfb;
+	}
+
+	.task-list {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		flex: 1;
+		overflow-y: auto;
+		padding: 8px;
+		min-height: 70px;
 	}
 </style>
