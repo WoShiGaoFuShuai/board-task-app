@@ -4,8 +4,9 @@ export interface Column {
 	taskIds: string[];
 }
 
-export interface ChangeTaskOrderPayload {
-	columnId: string;
+export interface MoveTaskPayload {
+	columnIdFrom: string;
+	columnIdTo: string;
 	oldIndex: number;
 	newIndex: number;
 }

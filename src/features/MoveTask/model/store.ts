@@ -1,12 +1,18 @@
-import { type ChangeTaskOrderPayload, useColumnStore } from '@entities/column';
-
+import { type MoveTaskPayload, useColumnStore } from '@entities/column';
 import { defineStore } from 'pinia';
 
 export const useMoveTaskStore = defineStore('moveTask', () => {
-	const { changeTaskOrder } = useColumnStore();
+	const { moveTaskInColumn, moveTaskBetweenColumns } = useColumnStore();
 
-	const moveTask = ({ columnId, oldIndex, newIndex }: ChangeTaskOrderPayload) => {
-		changeTaskOrder({ columnId, oldIndex, newIndex });
+	const moveTask = (payload: MoveTaskPayload) => {
+		const { columnIdFrom, columnIdTo, oldIndex, newIndex } = payload;
+
+		if (columnIdFrom === columnIdTo) {
+			if (oldIndex === newIndex) return;
+			moveTaskInColumn(payload);
+		} else {
+			moveTaskBetweenColumns(payload);
+		}
 	};
 
 	return { moveTask };
