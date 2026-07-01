@@ -1,24 +1,13 @@
 <template>
 	<div
 		ref="dragRef"
-		class="column-body"
+		:data-column-id="columnId"
 	>
-		<div
-			v-if="!tasks.length"
-			class="column-empty"
-		>
-			<span>
-				{{ emptyPhrase }}
-			</span>
-		</div>
-
-		<template v-else>
-			<TaskCard
-				v-for="task in tasks"
-				:key="task.id"
-				:task
-			/>
-		</template>
+		<TaskCard
+			v-for="task in tasks"
+			:key="task.id"
+			:task
+		/>
 	</div>
 </template>
 
@@ -31,26 +20,29 @@
 	import { useDraggable } from 'vue-draggable-plus';
 	import { useMoveTaskStore } from '../model/store.ts';
 
-	const props = defineProps<{
+	defineProps<{
 		tasks: Task[];
-		emptyPhrase: string;
 		columnId: string;
 	}>();
 
-	const parentWrapperRef = useTemplateRef<HTMLElement | null>('dragRef');
+	const dragRef = useTemplateRef<HTMLElement | null>('dragRef');
 
 	const { moveTask } = useMoveTaskStore();
 
-	useDraggable(parentWrapperRef, {
+	useDraggable(dragRef, {
 		animation: 150,
 		ghostClass: 'ghost',
+		group: 'tasks',
 		onEnd(e) {
-			const { oldDraggableIndex, newDraggableIndex } = e;
+			const { from, to, oldDraggableIndex, newDraggableIndex } = e;
 
 			if (oldDraggableIndex == null || newDraggableIndex == null) return;
-			if (oldDraggableIndex === newDraggableIndex) return;
 
-			moveTask({ columnId: props.columnId, oldIndex: oldDraggableIndex, newIndex: newDraggableIndex });
+			const columnIdFrom = from.dataset.columnId;
+			const columnIdTo = to.dataset.columnId;
+			if (!columnIdFrom || !columnIdTo) throw new Error('column id is missing on drag container');
+
+			moveTask({ columnIdFrom, columnIdTo, oldIndex: oldDraggableIndex, newIndex: newDraggableIndex });
 		},
 	});
 </script>
@@ -59,23 +51,5 @@
 	.ghost {
 		opacity: 0.5;
 		background: #c8ebfb;
-	}
-
-	.column-body {
-		flex: 1;
-		overflow-y: auto;
-		padding: 8px;
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-
-	.column-empty {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 24px 12px;
-		color: var(--colors-surface-600);
-		font-size: 13px;
 	}
 </style>

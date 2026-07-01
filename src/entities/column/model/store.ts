@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { ChangeTaskOrderPayload, Column } from './types';
+import type { Column, MoveTaskBetweenColumnsPayload, MoveTaskInColumnPayload } from './types';
 
 export const useColumnStore = defineStore('column', () => {
 	const columns = ref<Column[]>([
@@ -31,6 +31,18 @@ export const useColumnStore = defineStore('column', () => {
 		},
 	]);
 
+	const getColumnById = (columnId: string): Column | undefined => {
+		return columns.value.find((c) => c.id === columnId);
+	};
+
+	const insertTask = (col: Column, index: number, item: string) => {
+		col.taskIds.splice(index, 0, item);
+	};
+
+	const extractTask = (col: Column, index: number): string | undefined => {
+		return col.taskIds.splice(index, 1)[0];
+	};
+
 	const getColumnsByIds = (ids: string[] | undefined): Column[] => {
 		if (!ids) return [];
 
@@ -39,19 +51,30 @@ export const useColumnStore = defineStore('column', () => {
 			.filter((c: Column | undefined) => c !== undefined);
 	};
 
-	const changeTaskOrder = (payload: ChangeTaskOrderPayload) => {
+	const moveTaskInColumn = (payload: MoveTaskInColumnPayload) => {
 		const { columnId, newIndex, oldIndex } = payload;
 
-		if (!columnId) return [];
+		const column = getColumnById(columnId);
+		if (!column) return;
 
-		const column = columns.value.find((col) => col.id === columnId);
-		if (!column) return [];
+		const draggableItem = extractTask(column, oldIndex);
+		if (!draggableItem) return;
 
-		const [draggableItem] = column.taskIds.splice(oldIndex, 1);
-		if (!draggableItem) return [];
-
-		column?.taskIds.splice(newIndex, 0, draggableItem);
+		insertTask(column, newIndex, draggableItem);
 	};
 
-	return { getColumnsByIds, changeTaskOrder };
+	const moveTaskBetweenColumns = (payload: MoveTaskBetweenColumnsPayload) => {
+		const { columnIdFrom, columnIdTo, newIndex, oldIndex } = payload;
+
+		const columnFrom = getColumnById(columnIdFrom);
+		const columnTo = getColumnById(columnIdTo);
+		if (!columnFrom || !columnTo) return;
+
+		const draggableItem = extractTask(columnFrom, oldIndex);
+		if (!draggableItem) return;
+
+		insertTask(columnTo, newIndex, draggableItem);
+	};
+
+	return { getColumnsByIds, moveTaskInColumn, moveTaskBetweenColumns };
 });
