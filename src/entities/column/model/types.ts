@@ -4,16 +4,9 @@ export interface Column {
 	taskIds: string[];
 }
 
-interface MoveTaskBase {
-	oldIndex: number;
-	newIndex: number;
-}
-
-export interface MoveTaskBetweenColumnsPayload extends MoveTaskBase {
+export interface MoveTaskPayload {
 	columnIdFrom: string;
 	columnIdTo: string;
-}
-
-export interface MoveTaskInColumnPayload extends MoveTaskBase {
-	columnId: string;
+	oldIndex: number;
+	newIndex: number;
 }

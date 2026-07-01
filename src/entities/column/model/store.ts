@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Column, MoveTaskBetweenColumnsPayload, MoveTaskInColumnPayload } from './types';
+import type { Column, MoveTaskPayload } from './types';
 
 export const useColumnStore = defineStore('column', () => {
 	const columns = ref<Column[]>([
@@ -51,8 +51,8 @@ export const useColumnStore = defineStore('column', () => {
 			.filter((c: Column | undefined) => c !== undefined);
 	};
 
-	const moveTaskInColumn = (payload: MoveTaskInColumnPayload) => {
-		const { columnId, newIndex, oldIndex } = payload;
+	const moveTaskInColumn = (payload: MoveTaskPayload) => {
+		const { columnIdFrom: columnId, newIndex, oldIndex } = payload;
 
 		const column = getColumnById(columnId);
 		if (!column) return;
@@ -63,7 +63,7 @@ export const useColumnStore = defineStore('column', () => {
 		insertTask(column, newIndex, draggableItem);
 	};
 
-	const moveTaskBetweenColumns = (payload: MoveTaskBetweenColumnsPayload) => {
+	const moveTaskBetweenColumns = (payload: MoveTaskPayload) => {
 		const { columnIdFrom, columnIdTo, newIndex, oldIndex } = payload;
 
 		const columnFrom = getColumnById(columnIdFrom);
