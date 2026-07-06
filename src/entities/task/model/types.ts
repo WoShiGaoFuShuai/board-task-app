@@ -2,6 +2,8 @@ export type TaskPriority = 'low' | 'medium' | 'high';
 export type TaskStatus = 'todo' | 'inProgress' | 'done';
 
 export interface Task {
+	columnId: string;
+	order: string;
 	id: string;
 	title: string;
 	description: string | null;
