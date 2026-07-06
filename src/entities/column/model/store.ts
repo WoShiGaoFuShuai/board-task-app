@@ -7,17 +7,17 @@ export const useColumnStore = defineStore('column', () => {
 		{
 			id: 'col-1',
 			title: 'To Do',
-			taskIds: ['1', '4', '5'],
+			taskIds: ['c1-1', 'c1-2', 'c1-3', 'c1-4', 'c1-5', 'c1-6', 'c1-7'],
 		},
 		{
 			id: 'col-2',
 			title: 'In Progress',
-			taskIds: ['2', '3'],
+			taskIds: ['c2-1', 'c2-2', 'c2-3', 'c2-4', 'c2-5', 'c2-6', 'c2-7'],
 		},
 		{
 			id: 'col-3',
 			title: 'Done',
-			taskIds: [],
+			taskIds: ['c3-1', 'c3-2', 'c3-3', 'c3-4', 'c3-5', 'c3-6', 'c3-7'],
 		},
 		{
 			id: 'col-4',
@@ -76,5 +76,5 @@ export const useColumnStore = defineStore('column', () => {
 		insertTask(columnTo, newIndex, draggableItem);
 	};
 
-	return { getColumnsByIds, moveTaskInColumn, moveTaskBetweenColumns };
+	return { getColumnsByIds, moveTaskInColumn, moveTaskBetweenColumns, columns };
 });
