@@ -45,6 +45,8 @@
 		</section>
 
 		<ViewTaskDetails />
+
+		<div v-for="col in boardColumns">{{ col.taskIds }}</div>
 	</section>
 </template>
 
