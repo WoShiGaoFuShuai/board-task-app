@@ -30,7 +30,7 @@
 				class="board-columns"
 			>
 				<ColumnList
-					:columns="columns"
+					:columns
 					:isAnyFilterActive
 				/>
 			</section>
@@ -45,8 +45,6 @@
 		</section>
 
 		<ViewTaskDetails />
-
-		<div v-for="col in boardColumns">{{ col.taskIds }}</div>
 	</section>
 </template>
 
@@ -70,7 +68,7 @@
 	const { setCurrentBoardId, resetCurrentBoardId } = boardStore;
 	const { currentBoard } = storeToRefs(boardStore);
 	const { getColumnsByIds } = useColumnStore();
-	const { getTasksByIds } = useTaskStore();
+	const { getTasksByColumnId } = useTaskStore();
 	const viewTaskDetailsStore = useViewTaskDetailsStore();
 
 	const paramsId = computed(() => {
@@ -93,7 +91,7 @@
 
 	const columns = computed(() =>
 		boardColumns.value.map((column) => {
-			const allTasks = getTasksByIds(column.taskIds);
+			const allTasks = getTasksByColumnId(column.id);
 
 			const tasks = filterTasks(allTasks);
 
