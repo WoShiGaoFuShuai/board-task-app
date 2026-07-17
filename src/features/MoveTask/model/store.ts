@@ -1,18 +1,21 @@
-import { type MoveTaskPayload, useColumnStore } from '@entities/column';
+import { generateKeyBetween } from 'fractional-indexing';
 import { defineStore } from 'pinia';
+import { useTaskStore } from '@/entities/task';
+import type { MoveTaskPayload } from '../model/types.ts';
 
 export const useMoveTaskStore = defineStore('moveTask', () => {
-	const { moveTaskInColumn, moveTaskBetweenColumns } = useColumnStore();
+	const { getTaskById, changeTaskOrderAndColumn } = useTaskStore();
 
 	const moveTask = (payload: MoveTaskPayload) => {
-		const { columnIdFrom, columnIdTo, oldIndex, newIndex } = payload;
+		const { itemId, columnIdTo, prevSiblingId, nextSiblingId } = payload;
 
-		if (columnIdFrom === columnIdTo) {
-			if (oldIndex === newIndex) return;
-			moveTaskInColumn(payload);
-		} else {
-			moveTaskBetweenColumns(payload);
-		}
+		const prevTask = getTaskById(prevSiblingId);
+		const nextTask = getTaskById(nextSiblingId);
+
+		const newOrder = generateKeyBetween(prevTask?.order, nextTask?.order);
+
+		changeTaskOrderAndColumn(itemId, newOrder, columnIdTo);
+		//TODO: додати пізніше toast error
 	};
 
 	return { moveTask };

@@ -2,6 +2,7 @@
 	<div
 		class="task-card"
 		@click="onTaskClick?.(task.id)"
+		:data-task-id="task.id"
 	>
 		<h5 class="task-title">{{ task.title }}</h5>
 

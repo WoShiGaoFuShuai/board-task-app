@@ -263,17 +263,26 @@ export const useTaskStore = defineStore('task', () => {
 		},
 	]);
 
-	const getTaskById = (id: string): Task | null => {
+	const getTaskById = (id: string | null): Task | null => {
+		if (!id) return null;
+
 		return tasks.value.find((task) => task.id === id) ?? null;
 	};
 
-	const getTasksByIds = (ids: string[] | undefined): Task[] => {
-		if (!ids) return [];
+	const getTasksByColumnId = (columnId: string | undefined): Task[] => {
+		if (!columnId) return [];
 
-		return ids
-			.map((id: string) => tasks.value.find((task: Task) => task.id === id))
-			.filter((mappedItem: Task | undefined) => mappedItem !== undefined);
+		return tasks.value
+			.filter((task) => task.columnId === columnId)
+			.sort((a: Task, b: Task) => (a.order < b.order ? -1 : a.order > b.order ? 1 : 0));
 	};
 
-	return { getTasksByIds, getTaskById };
+	const changeTaskOrderAndColumn = (id: string, order: string, colId: string) => {
+		const task = getTaskById(id);
+		if (!task) return;
+		task.order = order;
+		task.columnId = colId;
+	};
+
+	return { getTaskById, getTasksByColumnId, changeTaskOrderAndColumn };
 });

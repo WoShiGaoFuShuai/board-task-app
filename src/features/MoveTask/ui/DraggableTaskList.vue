@@ -35,15 +35,23 @@
 		ghostClass: 'ghost',
 		group: 'tasks',
 		onEnd(e) {
-			const { from, to, oldDraggableIndex, newDraggableIndex } = e;
+			const { to, oldDraggableIndex, newDraggableIndex, item } = e;
 
 			if (oldDraggableIndex == null || newDraggableIndex == null) return;
 
-			const columnIdFrom = from.dataset.columnId;
 			const columnIdTo = to.dataset.columnId;
-			if (!columnIdFrom || !columnIdTo) throw new Error('column id is missing on drag container');
+			if (!columnIdTo) throw new Error('Column id is missing on drag container');
 
-			moveTask({ columnIdFrom, columnIdTo, oldIndex: oldDraggableIndex, newIndex: newDraggableIndex });
+			const itemId = item.dataset?.taskId ?? null;
+			if (!itemId) throw new Error('Draggable item has no ID');
+
+			const prevSibling = item.previousElementSibling as HTMLElement | null;
+			const nextSibling = item.nextElementSibling as HTMLElement | null;
+
+			const prevSiblingId = prevSibling?.dataset.taskId ?? null;
+			const nextSiblingId = nextSibling?.dataset.taskId ?? null;
+
+			moveTask({ itemId, columnIdTo, prevSiblingId, nextSiblingId });
 		},
 	});
 </script>
