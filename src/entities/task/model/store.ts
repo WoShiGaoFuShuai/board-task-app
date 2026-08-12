@@ -123,7 +123,7 @@ export const useTaskStore = defineStore('task', () => {
 			order: c2Orders[2],
 			title: '3. Add search functionality',
 			description: 'Client-side fuzzy search over tasks',
-			priority: 'medium',
+			priority: 'high',
 			status: 'inProgress',
 			createdAt: '2026-04-02T11:00:00Z',
 			assigneesId: ['user-1'],
@@ -280,6 +280,7 @@ export const useTaskStore = defineStore('task', () => {
 	const changeTaskOrderAndColumn = (id: string, order: string, colId: string) => {
 		const task = getTaskById(id);
 		if (!task) return;
+
 		task.order = order;
 		task.columnId = colId;
 	};

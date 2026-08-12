@@ -35,12 +35,16 @@
 		ghostClass: 'ghost',
 		group: 'tasks',
 		onEnd(e) {
-			const { to, oldDraggableIndex, newDraggableIndex, item } = e;
+			const { to, from, oldDraggableIndex, newDraggableIndex, item } = e;
 
 			if (oldDraggableIndex == null || newDraggableIndex == null) return;
 
 			const columnIdTo = to.dataset.columnId;
-			if (!columnIdTo) throw new Error('Column id is missing on drag container');
+			const columnIdFrom = from.dataset.columnId;
+			if (!columnIdTo) throw new Error('[DraggableTaskList] Drop target is missing data-column-id');
+			if (!columnIdFrom) throw new Error('[DraggableTaskList] Drag source is missing data-column-id');
+
+			if (oldDraggableIndex === newDraggableIndex && columnIdFrom === columnIdTo) return;
 
 			const itemId = item.dataset?.taskId ?? null;
 			if (!itemId) throw new Error('Draggable item has no ID');
