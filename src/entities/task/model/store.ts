@@ -1,7 +1,7 @@
-import { generateNKeysBetween } from 'fractional-indexing';
+import { generateKeyBetween, generateNKeysBetween } from 'fractional-indexing';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Task } from './types';
+import type { CreateTaskInput, Task, TaskStatus } from './types';
 
 export const useTaskStore = defineStore('task', () => {
 	const c1Orders = generateNKeysBetween(null, null, 7);
@@ -75,7 +75,7 @@ export const useTaskStore = defineStore('task', () => {
 			order: c1Orders[5],
 			title: '6. Add dark mode toggle',
 			description: 'Persist preference in localStorage',
-			priority: null,
+			priority: 'low',
 			status: 'todo',
 			createdAt: '2026-04-01T14:00:00Z',
 			assigneesId: [],
@@ -159,7 +159,7 @@ export const useTaskStore = defineStore('task', () => {
 			order: c2Orders[5],
 			title: '6. Add multi-language support',
 			description: 'i18n setup with EN and UK locales',
-			priority: null,
+			priority: 'medium',
 			status: 'inProgress',
 			createdAt: '2026-04-02T14:00:00Z',
 			assigneesId: ['user-2'],
@@ -231,7 +231,7 @@ export const useTaskStore = defineStore('task', () => {
 			order: c3Orders[4],
 			title: '5. Set up Git repository',
 			description: 'Push to GitHub, add branch protection',
-			priority: null,
+			priority: 'high',
 			status: 'done',
 			createdAt: '2026-03-25T13:00:00Z',
 			assigneesId: ['user-1'],
@@ -285,5 +285,41 @@ export const useTaskStore = defineStore('task', () => {
 		task.columnId = colId;
 	};
 
-	return { getTaskById, getTasksByColumnId, changeTaskOrderAndColumn };
+	const addTask = (taskInput: CreateTaskInput) => {
+		// TODO: AFTER MR - remove status from project
+
+		let status: TaskStatus;
+
+		const sameColumnTasks = getTasksByColumnId(taskInput.columnId);
+
+		const order = sameColumnTasks.length
+			? generateKeyBetween(sameColumnTasks.at(-1)?.order, null)
+			: generateKeyBetween(null, null);
+
+		// TODO: тимчасове рішення. після видалення status - прибрати
+		switch (taskInput.columnId) {
+			case 'col-2':
+				status = 'inProgress';
+				break;
+
+			case 'col-3':
+				status = 'done';
+				break;
+
+			default:
+				status = 'todo';
+		}
+
+		tasks.value.push({
+			...taskInput,
+			id: crypto.randomUUID(),
+			createdAt: new Date().toISOString(),
+			order,
+			status,
+		});
+
+		//TODO: add toast
+	};
+
+	return { getTaskById, getTasksByColumnId, changeTaskOrderAndColumn, addTask };
 });

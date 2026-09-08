@@ -2,7 +2,7 @@
 	<button
 		type="button"
 		:aria-label="ariaLabel"
-		:class="[size, type, br]"
+		:class="[size, type, br, color]"
 	>
 		<span :class="iconClass" />
 	</button>
@@ -12,7 +12,7 @@
 	setup
 	lang="ts"
 >
-	import { ButtonBorderRadius, ButtonSize, ButtonType } from '../model/constants.ts';
+	import { ButtonBorderRadius, ButtonColor, ButtonSize, ButtonType } from '../model/constants.ts';
 
 	interface ButtonIconsProps {
 		ariaLabel?: string;
@@ -20,12 +20,14 @@
 		type?: ButtonType;
 		size?: ButtonSize;
 		br?: ButtonBorderRadius;
+		color?: ButtonColor;
 	}
 
 	withDefaults(defineProps<ButtonIconsProps>(), {
 		type: ButtonType.OUTLINE,
 		size: ButtonSize.M,
 		br: ButtonBorderRadius.M,
+		color: ButtonColor.DEFAULT,
 	});
 </script>
 
@@ -36,7 +38,6 @@
 		justify-content: center;
 		flex-shrink: 0;
 		background-color: var(--colors-depth-2);
-		color: var(--colors-surface-300);
 		cursor: pointer;
 		transition:
 			border-color 0.15s ease,
@@ -82,5 +83,13 @@
 	.size_m {
 		width: var(--spacing-control);
 		height: var(--spacing-control);
+	}
+
+	.color_default {
+		color: var(--colors-surface-300);
+	}
+
+	.color_muted {
+		color: var(--colors-surface-500);
 	}
 </style>

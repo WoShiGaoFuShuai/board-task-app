@@ -17,6 +17,8 @@
 				class="board-filter-bar"
 			/>
 
+			<CreateTask />
+
 			<section
 				v-if="!boardColumns.length"
 				class="board-empty"
@@ -55,6 +57,7 @@
 	import { useBoardStore } from '@entities/board';
 	import { useColumnStore } from '@entities/column';
 	import { useTaskStore } from '@entities/task';
+	import { CreateTask } from '@features/CreateTask';
 	import { useFilter } from '@features/FilterPanel';
 	import { useViewTaskDetailsStore, ViewTaskDetails } from '@features/ViewTaskDetails';
 	import { storeToRefs } from 'pinia';
