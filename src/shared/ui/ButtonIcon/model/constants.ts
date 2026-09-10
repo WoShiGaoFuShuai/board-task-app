@@ -19,3 +19,10 @@ export const ButtonBorderRadius = {
 } as const;
 
 export type ButtonBorderRadius = (typeof ButtonBorderRadius)[keyof typeof ButtonBorderRadius];
+
+export const ButtonColor = {
+	DEFAULT: 'color_default',
+	MUTED: 'color_muted',
+} as const;
+
+export type ButtonColor = (typeof ButtonColor)[keyof typeof ButtonColor];
