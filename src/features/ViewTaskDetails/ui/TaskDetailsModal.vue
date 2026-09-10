@@ -29,9 +29,9 @@
 				<div class="i-lucide-flag text-xs" />
 				{{ task.priority }}
 			</span>
-			<span :class="['chip', `chip-status-${task.status}`]">
+			<span :class="['chip', `chip-column-${task.columnId}`]">
 				<div class="i-lucide-circle-dot text-xs" />
-				{{ task.status }}
+				{{ task.columnId }}
 			</span>
 		</div>
 
@@ -170,17 +170,17 @@
 		background-color: rgba(52, 199, 89, 0.12);
 	}
 
-	.chip-status-todo {
+	.chip-column-todo {
 		color: var(--colors-surface-400);
 		background-color: rgba(255, 255, 255, 0.08);
 	}
 
-	.chip-status-inProgress {
+	.chip-column-inProgress {
 		color: #007aff;
 		background-color: rgba(0, 122, 255, 0.12);
 	}
 
-	.chip-status-done {
+	.chip-column-done {
 		color: #34c759;
 		background-color: rgba(52, 199, 89, 0.12);
 	}

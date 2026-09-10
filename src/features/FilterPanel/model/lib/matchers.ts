@@ -1,4 +1,4 @@
-import type { Task, TaskPriority, TaskStatus } from '@entities/task';
+import type { Task, TaskPriority } from '@entities/task';
 
 export const matchesPriority = (task: Task, activeFilters: TaskPriority[]) => {
 	if (!activeFilters.length) return true;
@@ -14,8 +14,8 @@ export const matchesQuery = (task: Task, q: string) => {
 	return task.title.toLowerCase().includes(normalized) || (task.description ?? '').toLowerCase().includes(normalized);
 };
 
-export const matchesStatus = (task: Task, activeFilters: TaskStatus[]) => {
+export const matchesColumn = (task: Task, activeFilters: string[]) => {
 	if (!activeFilters.length) return true;
 
-	return activeFilters.includes(task.status);
+	return activeFilters.includes(task.columnId);
 };
