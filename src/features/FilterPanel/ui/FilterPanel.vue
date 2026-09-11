@@ -30,18 +30,18 @@
 		</section>
 
 		<section class="filter-section">
-			<p class="filter-section-label">{{ status.title }}</p>
+			<p class="filter-section-label">Columns</p>
 
 			<div class="filter-chips">
 				<button
 					type="button"
-					v-for="item in status.items"
-					:key="item.value"
+					v-for="col in columns"
+					:key="col.id"
 					class="filter-chip"
-					:class="{ 'chip-status--active': activeFilters.status.includes(item.value)}"
-					@click="$emit('toggleFilter', {key: status.id, filter: item.value })"
+					:class="{ 'chip-column--active': activeFilters.columnId.includes(col.id)}"
+					@click="$emit('toggleFilter', {key: 'columnId', filter: col.id })"
 				>
-					{{ item.value }}
+					{{ col.title }}
 				</button>
 			</div>
 		</section>
@@ -52,7 +52,8 @@
 	lang="ts"
 	setup
 >
-	import { priority, status } from '../model/constants';
+	import type { Column } from '@entities/column';
+	import { priority } from '../model/constants';
 	import type { ActiveFilters, ToggleFilterPayload } from '../model/types';
 
 	defineEmits<{
@@ -63,6 +64,7 @@
 	defineProps<{
 		hasActiveFilters: boolean;
 		activeFilters: ActiveFilters;
+		columns: Column[];
 	}>();
 </script>
 
@@ -171,7 +173,7 @@
 		background-color: rgba(52, 199, 89, 0.12);
 	}
 
-	.chip-status--active {
+	.chip-column--active {
 		color: var(--colors-primary-300);
 		background-color: rgba(124, 58, 237, 0.18);
 		border-color: rgba(124, 58, 237, 0.4);

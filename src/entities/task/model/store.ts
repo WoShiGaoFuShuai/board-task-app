@@ -1,7 +1,7 @@
 import { generateKeyBetween, generateNKeysBetween } from 'fractional-indexing';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { CreateTaskInput, Task, TaskStatus } from './types';
+import type { CreateTaskInput, Task } from './types';
 
 export const useTaskStore = defineStore('task', () => {
 	const c1Orders = generateNKeysBetween(null, null, 7);
@@ -16,7 +16,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '1. Design onboarding flow',
 			description: 'Create wireframes for the onboarding screens',
 			priority: 'high',
-			status: 'todo',
 			createdAt: '2026-04-01T09:00:00Z',
 			assigneesId: ['user-1'],
 			dueDate: null,
@@ -28,7 +27,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '2. Write API documentation',
 			description: 'Document all REST endpoints with examples',
 			priority: 'medium',
-			status: 'todo',
 			createdAt: '2026-04-01T10:00:00Z',
 			assigneesId: ['user-2'],
 			dueDate: null,
@@ -40,7 +38,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '3. Refactor auth module',
 			description: 'Split auth logic into composables',
 			priority: 'medium',
-			status: 'todo',
 			createdAt: '2026-04-01T11:00:00Z',
 			assigneesId: [],
 			dueDate: null,
@@ -52,7 +49,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '4. Create landing page',
 			description: null,
 			priority: 'low',
-			status: 'todo',
 			createdAt: '2026-04-01T12:00:00Z',
 			assigneesId: ['user-3'],
 			dueDate: null,
@@ -64,7 +60,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '5. Set up analytics',
 			description: 'Integrate product analytics SDK',
 			priority: 'low',
-			status: 'todo',
 			createdAt: '2026-04-01T13:00:00Z',
 			assigneesId: ['user-1'],
 			dueDate: null,
@@ -76,7 +71,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '6. Add dark mode toggle',
 			description: 'Persist preference in localStorage',
 			priority: 'low',
-			status: 'todo',
 			createdAt: '2026-04-01T14:00:00Z',
 			assigneesId: [],
 			dueDate: null,
@@ -88,7 +82,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '7. Optimize image loading',
 			description: 'Add lazy loading and responsive srcset',
 			priority: 'medium',
-			status: 'todo',
 			createdAt: '2026-04-01T15:00:00Z',
 			assigneesId: ['user-2'],
 			dueDate: null,
@@ -100,7 +93,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '1. Build user profile page',
 			description: 'Layout with avatar, bio and stats',
 			priority: 'high',
-			status: 'inProgress',
 			createdAt: '2026-04-02T09:00:00Z',
 			assigneesId: ['user-1'],
 			dueDate: null,
@@ -112,7 +104,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '2. Integrate payment gateway',
 			description: 'Stripe checkout for pro plan',
 			priority: 'high',
-			status: 'inProgress',
 			createdAt: '2026-04-02T10:00:00Z',
 			assigneesId: ['user-2', 'user-3'],
 			dueDate: null,
@@ -124,7 +115,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '3. Add search functionality',
 			description: 'Client-side fuzzy search over tasks',
 			priority: 'high',
-			status: 'inProgress',
 			createdAt: '2026-04-02T11:00:00Z',
 			assigneesId: ['user-1'],
 			dueDate: null,
@@ -136,7 +126,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '4. Create notification system',
 			description: null,
 			priority: 'medium',
-			status: 'inProgress',
 			createdAt: '2026-04-02T12:00:00Z',
 			assigneesId: [],
 			dueDate: null,
@@ -148,7 +137,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '5. Implement file upload',
 			description: 'Drag and drop attachments to tasks',
 			priority: 'low',
-			status: 'inProgress',
 			createdAt: '2026-04-02T13:00:00Z',
 			assigneesId: ['user-3'],
 			dueDate: null,
@@ -160,7 +148,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '6. Add multi-language support',
 			description: 'i18n setup with EN and UK locales',
 			priority: 'medium',
-			status: 'inProgress',
 			createdAt: '2026-04-02T14:00:00Z',
 			assigneesId: ['user-2'],
 			dueDate: null,
@@ -172,7 +159,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '7. Improve form validation',
 			description: 'Unified error display across inputs',
 			priority: 'low',
-			status: 'inProgress',
 			createdAt: '2026-04-02T15:00:00Z',
 			assigneesId: [],
 			dueDate: null,
@@ -184,7 +170,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '1. Setup project structure',
 			description: 'Feature-Sliced Design layers',
 			priority: 'high',
-			status: 'done',
 			createdAt: '2026-03-25T09:00:00Z',
 			assigneesId: ['user-1'],
 			dueDate: null,
@@ -196,7 +181,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '2. Configure Biome',
 			description: 'Formatter and linter rules',
 			priority: 'medium',
-			status: 'done',
 			createdAt: '2026-03-25T10:00:00Z',
 			assigneesId: ['user-2'],
 			dueDate: null,
@@ -208,7 +192,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '3. Install dependencies',
 			description: null,
 			priority: 'low',
-			status: 'done',
 			createdAt: '2026-03-25T11:00:00Z',
 			assigneesId: [],
 			dueDate: null,
@@ -220,7 +203,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '4. Create initial README',
 			description: 'Getting started section',
 			priority: 'low',
-			status: 'done',
 			createdAt: '2026-03-25T12:00:00Z',
 			assigneesId: ['user-3'],
 			dueDate: null,
@@ -232,7 +214,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '5. Set up Git repository',
 			description: 'Push to GitHub, add branch protection',
 			priority: 'high',
-			status: 'done',
 			createdAt: '2026-03-25T13:00:00Z',
 			assigneesId: ['user-1'],
 			dueDate: null,
@@ -244,7 +225,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '6. Configure Vite build',
 			description: 'Path aliases and env handling',
 			priority: 'medium',
-			status: 'done',
 			createdAt: '2026-03-25T14:00:00Z',
 			assigneesId: ['user-2'],
 			dueDate: null,
@@ -256,7 +236,6 @@ export const useTaskStore = defineStore('task', () => {
 			title: '7. Add basic routing',
 			description: 'Main and Board pages wired up',
 			priority: 'medium',
-			status: 'done',
 			createdAt: '2026-03-25T15:00:00Z',
 			assigneesId: ['user-3'],
 			dueDate: null,
@@ -286,36 +265,17 @@ export const useTaskStore = defineStore('task', () => {
 	};
 
 	const addTask = (taskInput: CreateTaskInput) => {
-		// TODO: AFTER MR - remove status from project
-
-		let status: TaskStatus;
-
 		const sameColumnTasks = getTasksByColumnId(taskInput.columnId);
 
 		const order = sameColumnTasks.length
 			? generateKeyBetween(sameColumnTasks.at(-1)?.order, null)
 			: generateKeyBetween(null, null);
 
-		// TODO: тимчасове рішення. після видалення status - прибрати
-		switch (taskInput.columnId) {
-			case 'col-2':
-				status = 'inProgress';
-				break;
-
-			case 'col-3':
-				status = 'done';
-				break;
-
-			default:
-				status = 'todo';
-		}
-
 		tasks.value.push({
 			...taskInput,
 			id: crypto.randomUUID(),
 			createdAt: new Date().toISOString(),
 			order,
-			status,
 		});
 
 		//TODO: add toast

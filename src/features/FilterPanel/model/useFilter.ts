@@ -1,13 +1,13 @@
 import type { Task } from '@entities/task';
 import { refDebounced } from '@vueuse/core';
 import { computed, ref } from 'vue';
-import { matchesPriority, matchesQuery, matchesStatus } from './lib/matchers';
+import { matchesColumn, matchesPriority, matchesQuery } from './lib/matchers';
 import type { ActiveFilters } from './types';
 
 export const useFilter = () => {
 	const activeFilters = ref<ActiveFilters>({
 		priority: [],
-		status: [],
+		columnId: [],
 	});
 
 	const query = ref('');
@@ -22,7 +22,7 @@ export const useFilter = () => {
 	};
 
 	const resetActiveFilters = () => {
-		activeFilters.value = { priority: [], status: [] };
+		activeFilters.value = { priority: [], columnId: [] };
 	};
 
 	const hasActiveFilters = computed(() => Object.values(activeFilters.value).some((arr) => arr.length > 0));
@@ -33,7 +33,7 @@ export const useFilter = () => {
 		return allTasks.filter(
 			(task: Task) =>
 				matchesPriority(task, activeFilters.value.priority) &&
-				matchesStatus(task, activeFilters.value.status) &&
+				matchesColumn(task, activeFilters.value.columnId) &&
 				matchesQuery(task, queryDebounced.value)
 		);
 	};

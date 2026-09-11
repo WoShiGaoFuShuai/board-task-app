@@ -3,8 +3,8 @@
 		<Popover v-model="isPopoverOpen">
 			<template #trigger>
 				<ButtonIcon
-                    iconClass="i-lucide-list-filter text-sm text-surface-300"
-                    ariaLabel="Filter"
+					iconClass="i-lucide-list-filter text-sm text-surface-300"
+					ariaLabel="Filter"
 				/>
 			</template>
 
@@ -13,6 +13,7 @@
 				@reset-filters="$emit('resetFilters')"
 				:hasActiveFilters
 				:activeFilters
+				:columns
 			/>
 		</Popover>
 
@@ -29,7 +30,7 @@
 		<ButtonIcon
 			v-else
 			iconClass="i-lucide-search text-sm text-surface-500"
-            ariaLabel="Search tasks"
+			ariaLabel="Search tasks"
 			@click="isSearchActive = true"
 		/>
 	</div>
@@ -39,6 +40,7 @@
 	setup
 	lang="ts"
 >
+	import type { Column } from '@entities/column';
 	import type { ActiveFilters, ToggleFilterPayload } from '@features/FilterPanel';
 	import { FilterPanel } from '@features/FilterPanel';
 	import { ButtonIcon } from '@shared/ui/ButtonIcon';
@@ -57,6 +59,7 @@
 	defineProps<{
 		hasActiveFilters: boolean;
 		activeFilters: ActiveFilters;
+		columns: Column[];
 	}>();
 
 	const isSearchActive = ref(false);

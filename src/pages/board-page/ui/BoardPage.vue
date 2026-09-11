@@ -14,10 +14,13 @@
 				@reset-filters="resetActiveFilters"
 				:hasActiveFilters
 				:activeFilters
+				:columns="boardColumns"
 				class="board-filter-bar"
 			/>
 
 			<CreateTask />
+
+			<!--            // TODO: add create columns logic, if there is no columns - cant create task-->
 
 			<section
 				v-if="!boardColumns.length"
@@ -32,7 +35,7 @@
 				class="board-columns"
 			>
 				<ColumnList
-					:columns
+					:columns="columnsWithTasks"
 					:isAnyFilterActive
 				/>
 			</section>
@@ -92,7 +95,7 @@
 	const { query, activeFilters, toggleFilter, resetActiveFilters, hasActiveFilters, filterTasks, isAnyFilterActive } =
 		useFilter();
 
-	const columns = computed(() =>
+	const columnsWithTasks = computed(() =>
 		boardColumns.value.map((column) => {
 			const allTasks = getTasksByColumnId(column.id);
 

@@ -1,13 +1,7 @@
-import type { FilterGroup } from './types';
+import type { TaskPriority } from '@entities/task';
 
 export const priority = {
-	id: 'priority',
+	id: 'priority' as const,
 	title: 'Priority',
-	items: [{ value: 'low' }, { value: 'medium' }, { value: 'high' }],
-} satisfies FilterGroup;
-
-export const status = {
-	id: 'status',
-	title: 'Status',
-	items: [{ value: 'todo' }, { value: 'inProgress' }, { value: 'done' }],
-} satisfies FilterGroup;
+	items: [{ value: 'low' }, { value: 'medium' }, { value: 'high' }] as { value: TaskPriority }[],
+};
