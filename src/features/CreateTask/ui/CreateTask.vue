@@ -35,6 +35,8 @@
 	const submit = (payload: CreateTaskInput) => {
 		taskStore.addTask(payload);
 		openCreateTaskModal.value = false;
+
+		//TODO: Add toast for success/failute
 	};
 </script>
 

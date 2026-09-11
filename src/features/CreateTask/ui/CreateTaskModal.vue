@@ -28,6 +28,11 @@
 					name="title"
 					placeholder="Task title"
 				>
+				<span
+					v-if="errors.title"
+					class="field-error"
+					>{{ errors.title }}</span
+				>
 			</div>
 
 			<div class="field">
@@ -45,12 +50,12 @@
 				></textarea>
 			</div>
 
-			<div
-				v-if="columns.length"
-				class="field"
-			>
+			<div class="field">
 				<span class="field-label">Column</span>
-				<div class="buttons-group">
+				<div
+					v-if="columns.length"
+					class="buttons-group"
+				>
 					<button
 						class="chip column-chip"
 						v-for="col in columns"
@@ -62,6 +67,11 @@
 						{{ col.title }}
 					</button>
 				</div>
+				<span
+					v-if="errors.columnId"
+					class="field-error"
+					>{{ errors.columnId }}</span
+				>
 			</div>
 
 			<div class="field">
@@ -127,7 +137,7 @@
 	import type { CreateTaskInput, TaskPriority } from '@entities/task';
 	import { ButtonColor, ButtonIcon, ButtonSize, ButtonType } from '@shared/ui/ButtonIcon';
 	import { storeToRefs } from 'pinia';
-	import { computed, reactive } from 'vue';
+	import { computed, reactive, watch } from 'vue';
 
 	const { currentBoard } = storeToRefs(useBoardStore());
 	const { getColumnsByIds } = useColumnStore();
@@ -142,17 +152,6 @@
 		{ value: 'medium' as const, label: 'Medium' },
 		{ value: 'high' as const, label: 'High' },
 	];
-
-	function handleSubmit() {
-		//TODO: add validation later in NEXT MR
-
-		if (!form.title.trim()) return;
-		emit('submit', {
-			...form,
-			description: form.description?.trim() || null,
-			dueDate: form.dueDate?.trim() || null,
-		});
-	}
 
 	const showCalendar = (e: MouseEvent) => {
 		try {
@@ -174,6 +173,30 @@
 		dueDate: null,
 		assigneesId: [],
 	});
+
+	const errors = reactive({ title: '', columnId: '' });
+
+	const validate = () => {
+		errors.title = form.title.trim() ? '' : 'Title is required';
+		errors.columnId = form.columnId ? '' : 'Create a column first';
+
+		return !errors.title && !errors.columnId;
+	};
+
+	function handleSubmit() {
+		if (!validate()) return;
+
+		emit('submit', {
+			...form,
+			description: form.description?.trim() || null,
+			dueDate: form.dueDate?.trim() || null,
+		});
+	}
+
+	watch(
+		() => form.title,
+		() => (errors.title = '')
+	);
 </script>
 
 <style scoped>
@@ -258,17 +281,16 @@
 		resize: vertical;
 	}
 
+	.field-error {
+		font-size: 11px;
+		font-weight: 500;
+		color: #ff3b30;
+	}
+
 	.date-wrapper {
 		position: relative;
 		display: flex;
 		align-items: center;
-	}
-
-	.field-icon {
-		position: absolute;
-		left: 10px;
-		color: var(--colors-surface-500);
-		pointer-events: none;
 	}
 
 	input[type="date"] {
