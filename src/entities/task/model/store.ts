@@ -281,5 +281,16 @@ export const useTaskStore = defineStore('task', () => {
 		//TODO: add toast
 	};
 
-	return { getTaskById, getTasksByColumnId, changeTaskOrderAndColumn, addTask };
+	const deleteTask = (id: string) => {
+		const task = tasks.value.find((task) => task.id === id);
+
+		// TODO: потім дивитись в parent і створити toast для success / failure
+		// TODO: потім реалізувати undo
+		if (!task) return false;
+
+		tasks.value = tasks.value.filter((t) => t.id !== task.id);
+		return true;
+	};
+
+	return { getTaskById, getTasksByColumnId, changeTaskOrderAndColumn, addTask, deleteTask };
 });

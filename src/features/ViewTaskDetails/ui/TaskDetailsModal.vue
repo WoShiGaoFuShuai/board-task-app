@@ -16,6 +16,14 @@
 			</div>
 
 			<ButtonIcon
+				icon-class="i-lucide-trash text-base"
+				aria-label="Delete"
+				:size="ButtonSize.S"
+				:type="ButtonType.DEFAULT"
+				@click="$emit('deleteTask', task.id)"
+			/>
+
+			<ButtonIcon
 				icon-class="i-lucide-x text-base"
 				aria-label="Close"
 				:size="ButtonSize.S"
@@ -88,6 +96,7 @@
 
 	defineEmits<{
 		closeModal: [];
+		deleteTask: [id: string];
 	}>();
 
 	const props = defineProps<{
@@ -123,6 +132,7 @@
 		flex-direction: column;
 		gap: 4px;
 		min-width: 0;
+		margin-right: auto;
 	}
 
 	.modal-title {
