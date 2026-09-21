@@ -20,7 +20,7 @@
 				aria-label="Delete"
 				:size="ButtonSize.S"
 				:type="ButtonType.DEFAULT"
-				@click="$emit('deleteTask', task.id)"
+				@click="$emit('deleteTask')"
 			/>
 
 			<ButtonIcon
@@ -97,6 +97,7 @@
 	defineEmits<{
 		closeModal: [];
 		deleteTask: [id: string];
+		deleteTask: [];
 	}>();
 
 	const props = defineProps<{

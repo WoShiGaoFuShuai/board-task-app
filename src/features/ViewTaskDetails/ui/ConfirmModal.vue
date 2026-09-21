@@ -1,21 +1,21 @@
 <template>
-	<div class="confirm-delete-overlay">
-		<div class="confirm-delete-dialog">
-			<p class="confirm-delete-question">Sure you want to delete?</p>
-			<div class="confirm-delete-actions">
+	<div class="confirm-overlay">
+		<div class="confirm-dialog">
+			<p class="confirm-question">{{ confirmModalContext.title }}</p>
+			<div class="confirm-actions">
 				<button
 					type="button"
 					class="btn-cancel"
-					@click="$emit('cancelDelete')"
+					@click="$emit('cancel')"
 				>
-					Cancel
+					{{ confirmModalContext.cancelBtnText }}
 				</button>
 				<button
 					type="button"
-					class="btn-delete"
-					@click="$emit('confirmDelete')"
+					class="btn-confirm"
+					@click="$emit('confirm')"
 				>
-					Delete
+					{{ confirmModalContext.confirmBtnText }}
 				</button>
 			</div>
 		</div>
@@ -26,14 +26,20 @@
 	setup
 	lang="ts"
 >
+	import type { ModalContext } from '../model/types.ts';
+
 	defineEmits<{
-		confirmDelete: [];
-		cancelDelete: [];
+		confirm: [];
+		cancel: [];
+	}>();
+
+	defineProps<{
+		confirmModalContext: ModalContext;
 	}>();
 </script>
 
 <style scoped>
-	.confirm-delete-overlay {
+	.confirm-overlay {
 		position: absolute;
 		inset: 0;
 		display: flex;
@@ -44,7 +50,7 @@
 		border-radius: inherit;
 	}
 
-	.confirm-delete-dialog {
+	.confirm-dialog {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -56,7 +62,7 @@
 		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 	}
 
-	.confirm-delete-question {
+	.confirm-question {
 		margin: 0;
 		font-size: 14px;
 		font-weight: 600;
@@ -64,7 +70,7 @@
 		text-align: center;
 	}
 
-	.confirm-delete-actions {
+	.confirm-actions {
 		display: flex;
 		gap: 8px;
 	}
@@ -88,7 +94,7 @@
 		color: var(--colors-surface-200);
 	}
 
-	.btn-delete {
+	.btn-confirm {
 		padding: 8px 16px;
 		border: none;
 		border-radius: 8px;
@@ -100,7 +106,7 @@
 		transition: background-color 0.15s ease;
 	}
 
-	.btn-delete:hover {
+	.btn-confirm:hover {
 		background-color: rgba(255, 59, 48, 0.8);
 	}
 </style>
