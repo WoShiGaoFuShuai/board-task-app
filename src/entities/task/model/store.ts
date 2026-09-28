@@ -1,7 +1,7 @@
 import { generateKeyBetween, generateNKeysBetween } from 'fractional-indexing';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { CreateTaskInput, Task } from './types';
+import type { CreateTaskInput, EditTaskInput, Task } from './types';
 
 export const useTaskStore = defineStore('task', () => {
 	const c1Orders = generateNKeysBetween(null, null, 7);
@@ -292,5 +292,18 @@ export const useTaskStore = defineStore('task', () => {
 		return true;
 	};
 
-	return { getTaskById, getTasksByColumnId, changeTaskOrderAndColumn, addTask, deleteTask };
+	const updateTask = ({ title, id, priority, columnId, description, dueDate }: EditTaskInput) => {
+		// TODO: допрацювати - коли перенос в іншу колонку - змінити order?
+		const task = tasks.value.find((task) => task.id === id);
+		if (!task) return false;
+
+		task.title = title;
+		task.priority = priority;
+		task.columnId = columnId;
+		task.description = description;
+		task.dueDate = dueDate;
+		return true;
+	};
+
+	return { getTaskById, getTasksByColumnId, changeTaskOrderAndColumn, addTask, deleteTask, updateTask };
 });

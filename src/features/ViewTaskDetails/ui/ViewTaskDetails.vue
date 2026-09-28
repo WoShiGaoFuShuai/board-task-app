@@ -6,7 +6,11 @@
 		<TaskDetailsModal
 			@close-modal="handleCloseModal"
 			@delete-task="openConfirmDeleteModal"
+			@edit-start="isEditing = true"
+			@edit-finish-confirm="handleEditFinishConfirm"
 			:task="taskDetails"
+			:isEditing
+			:columnIds="currentBoard?.columnIds"
 		/>
 
 		<ConfirmModal
@@ -22,11 +26,11 @@
 	setup
 	lang="ts"
 >
-	import { useTaskStore } from '@entities/task';
+	import { useBoardStore } from '@entities/board';
+	import { type EditTaskInput, useTaskStore } from '@entities/task';
 	import ConfirmModal from '@features/ViewTaskDetails/ui/ConfirmModal.vue';
 	import { BaseModal } from '@shared/ui/BaseModal';
 	import { storeToRefs } from 'pinia';
-	import { ref } from 'vue';
 	import { computed, ref, shallowRef } from 'vue';
 	import { MODAL_CONTEXT } from '../model/constants.ts';
 	import { useViewTaskDetailsStore } from '../model/store';
@@ -35,17 +39,18 @@
 
 	const viewTaskDetailsStore = useViewTaskDetailsStore();
 	const { updateTask } = useTaskStore();
+
+	const boardStore = useBoardStore();
+	const { currentBoard } = storeToRefs(boardStore);
+
 	const { isOpen, taskDetails } = storeToRefs(viewTaskDetailsStore);
 
-	const isConfirmDeleteOpen = ref(false);
-	const idDelete = ref('');
+	const isEditing = ref(false);
+
 	const confirmModalContext = shallowRef<ModalContext>({
 		...MODAL_CONTEXT.empty,
 	});
 
-	const openConfirmDeleteModal = (id: string) => {
-		idDelete.value = id;
-		isConfirmDeleteOpen.value = true;
 	const isConfirmModalOpen = computed(() => confirmModalContext.value.type !== '');
 
 	const openConfirmDeleteModal = () => {
@@ -90,5 +95,17 @@
 		confirmModalContext.value = {
 			...MODAL_CONTEXT.empty,
 		};
+	};
+
+	const handleEditFinishConfirm = (editTaskPayload: EditTaskInput) => {
+		// TODO: продумати потім якщо одракові дані - не змінювати
+
+		const res = updateTask(editTaskPayload);
+
+		//TODO: ADD SUCCESS TOAST
+		if (res) console.log('success');
+		else console.log('error');
+
+		isEditing.value = false;
 	};
 </script>
