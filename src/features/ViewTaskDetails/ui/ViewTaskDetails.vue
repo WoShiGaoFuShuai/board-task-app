@@ -65,6 +65,17 @@
 		};
 	};
 
+	const resetConfirmModalContext = () => {
+		confirmModalContext.value = {
+			...MODAL_CONTEXT.empty,
+		};
+	};
+
+	const reset = () => {
+		isEditing.value = false;
+		resetConfirmModalContext();
+	};
+
 	const handleCancel = () => {
 		resetConfirmModalContext();
 	};
@@ -87,17 +98,6 @@
 
 		reset();
 		viewTaskDetailsStore.closeModal();
-	};
-
-	const reset = () => {
-		isEditing.value = false;
-		resetConfirmModalContext();
-	};
-
-	const resetConfirmModalContext = () => {
-		confirmModalContext.value = {
-			...MODAL_CONTEXT.empty,
-		};
 	};
 
 	const handleEditFinishConfirm = (editTaskPayload: EditTaskInput) => {
