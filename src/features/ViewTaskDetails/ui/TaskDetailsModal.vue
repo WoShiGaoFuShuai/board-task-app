@@ -11,6 +11,8 @@
 					type="text"
 					v-if="isEditing"
 					v-model="editTaskForm.title"
+					class="title-input"
+					aria-label="Task title"
 				>
 				<h2
 					v-else
@@ -25,6 +27,7 @@
 				<button
 					v-if="isEditing"
 					type="button"
+					class="btn-save"
 					@click="editTaskConfirm"
 				>
 					Save
@@ -58,8 +61,15 @@
 		</header>
 
 		<div class="chips-row">
-			<div v-if="isEditing">
-				<select v-model="editTaskForm.priority">
+			<div
+				v-if="isEditing"
+				class="chip-select-wrapper"
+			>
+				<select
+					v-model="editTaskForm.priority"
+					class="chip-select"
+					aria-label="Priority"
+				>
 					<option
 						v-for="(option, i) in TASK_PRIORITIES"
 						:key="i"
@@ -67,7 +77,7 @@
 					>
 						{{ option }}
 					</option>
-					<option :value="null">remove priority</option>
+					<option :value="null">No priority</option>
 				</select>
 			</div>
 			<span
@@ -78,8 +88,15 @@
 				{{ task.priority }}
 			</span>
 
-			<div v-if="isEditing && columnIds">
-				<select v-model="editTaskForm.columnId">
+			<div
+				v-if="isEditing && columnIds"
+				class="chip-select-wrapper"
+			>
+				<select
+					v-model="editTaskForm.columnId"
+					class="chip-select"
+					aria-label="Column"
+				>
 					<option
 						v-for="(option, i) in columnIds"
 						:key="i"
@@ -106,6 +123,9 @@
 			<textarea
 				v-if="isEditing"
 				v-model="editTaskForm.description"
+				class="description-textarea"
+				placeholder="Add a description…"
+				aria-label="Description"
 			></textarea>
 			<p
 				v-else-if="task.description"
@@ -421,5 +441,118 @@
 
 	.avatar:first-child {
 		margin-left: 0;
+	}
+
+	.title-input {
+		width: 100%;
+		padding: 2px 6px;
+		margin: 0;
+		font-size: 18px;
+		font-weight: 600;
+		color: var(--colors-surface-200);
+		background: transparent;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 6px;
+		outline: none;
+		line-height: 1.3;
+		transition: border-color 0.15s ease;
+	}
+
+	.title-input:focus {
+		border-color: var(--colors-primary-400);
+	}
+
+	.btn-save {
+		padding: 6px 14px;
+		border: none;
+		border-radius: 8px;
+		background-color: var(--colors-primary-500);
+		color: #fff;
+		font-size: 13px;
+		font-weight: 600;
+		cursor: pointer;
+		white-space: nowrap;
+		transition: background-color 0.15s ease;
+	}
+
+	.btn-save:hover {
+		background-color: var(--colors-primary-400);
+	}
+
+	.chip-select-wrapper {
+		display: inline-flex;
+	}
+
+	.chip-select {
+		padding: 4px 8px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 4px;
+		background-color: var(--colors-depth-3);
+		color: var(--colors-surface-300);
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		cursor: pointer;
+		outline: none;
+		color-scheme: dark;
+		transition: border-color 0.15s ease;
+	}
+
+	.chip-select:focus {
+		border-color: var(--colors-primary-400);
+	}
+
+	.description-textarea {
+		width: 100%;
+		min-height: 80px;
+		padding: 8px 10px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 8px;
+		background-color: var(--colors-depth-3);
+		color: var(--colors-surface-200);
+		font-size: 13px;
+		font-weight: 500;
+		line-height: 1.5;
+		resize: vertical;
+		outline: none;
+		box-sizing: border-box;
+		transition: border-color 0.15s ease;
+	}
+
+	.description-textarea::placeholder {
+		color: var(--colors-surface-500);
+	}
+
+	.description-textarea:focus {
+		border-color: var(--colors-primary-400);
+	}
+
+	.date-wrapper {
+		display: flex;
+		align-items: center;
+	}
+
+	.field-input {
+		padding: 4px 8px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		border-radius: 8px;
+		background-color: var(--colors-depth-3);
+		color: var(--colors-surface-200);
+		font-size: 12px;
+		font-weight: 500;
+		outline: none;
+		color-scheme: dark;
+		transition: border-color 0.15s ease;
+	}
+
+	.field-input:focus {
+		border-color: var(--colors-primary-400);
+	}
+
+	.field-input::-webkit-calendar-picker-indicator {
+		opacity: 0.4;
+		cursor: pointer;
+		filter: invert(1);
 	}
 </style>
