@@ -23,25 +23,23 @@
 				</h2>
 			</div>
 
-			<div>
-				<button
-					v-if="isEditing"
-					type="button"
-					class="btn-save"
-					@click="editTaskConfirm"
-				>
-					Save
-				</button>
-				<ButtonIcon
-					v-else
-					class="edit-btn default"
-					icon-class="i-lucide-pencil text-base"
-					aria-label="Edit"
-					:size="ButtonSize.S"
-					:type="ButtonType.DEFAULT"
-					@click="$emit('editStart')"
-				/>
-			</div>
+			<button
+				v-if="isEditing"
+				type="button"
+				class="btn-save"
+				@click="editTaskConfirm"
+			>
+				Save
+			</button>
+			<ButtonIcon
+				v-else
+				class="edit-btn default"
+				icon-class="i-lucide-pencil text-base"
+				aria-label="Edit"
+				:size="ButtonSize.S"
+				:type="ButtonType.DEFAULT"
+				@click="$emit('editStart')"
+			/>
 
 			<ButtonIcon
 				icon-class="i-lucide-trash text-base"
