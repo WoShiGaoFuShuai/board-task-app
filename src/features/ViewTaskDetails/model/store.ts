@@ -21,7 +21,7 @@ export const useViewTaskDetailsStore = defineStore('viewTaskDetails', () => {
 
 	const deleteCurrentTask = () => {
 		if (!taskId.value) return;
-		deleteTask(taskId.value);
+		return deleteTask(taskId.value);
 	};
 
 	return { isOpen, open, taskDetails, closeModal, deleteCurrentTask };
