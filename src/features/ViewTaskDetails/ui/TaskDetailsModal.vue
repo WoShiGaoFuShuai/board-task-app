@@ -105,7 +105,7 @@
 				</select>
 			</div>
 			<span
-				v-else
+				v-else-if="!isEditing"
 				:class="['chip', `chip-column-${task.columnId}`]"
 			>
 				<div class="i-lucide-circle-dot text-xs" />
