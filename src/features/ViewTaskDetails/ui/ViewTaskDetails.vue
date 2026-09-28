@@ -83,7 +83,10 @@
 	const handleConfirm = () => {
 		if (confirmModalContext.value.type === 'delete') {
 			// TODO: потім додати toast а при error не закривати модалку
-			viewTaskDetailsStore.deleteCurrentTask();
+			const success = viewTaskDetailsStore.deleteCurrentTask();
+			if (success)
+				console.log('deleted'); // TODO: toast
+			else console.log('error'); // TODO: toast
 		}
 
 		reset();

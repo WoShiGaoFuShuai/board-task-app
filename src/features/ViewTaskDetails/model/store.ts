@@ -20,7 +20,7 @@ export const useViewTaskDetailsStore = defineStore('viewTaskDetails', () => {
 	};
 
 	const deleteCurrentTask = () => {
-		if (!taskId.value) return;
+		if (!taskId.value) return false;
 		return deleteTask(taskId.value);
 	};
 
