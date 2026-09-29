@@ -9,6 +9,15 @@ export interface CreateTaskInput {
 	assigneesId: string[];
 }
 
+export interface EditTaskInput {
+	id: string;
+	title: string;
+	description: string | null;
+	columnId: string;
+	priority: TaskPriority | null;
+	dueDate: string | null;
+}
+
 export interface Task {
 	columnId: string;
 	order: string;
