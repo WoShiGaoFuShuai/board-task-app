@@ -242,6 +242,10 @@ export const useTaskStore = defineStore('task', () => {
 		},
 	]);
 
+	const generateOrder = (tasks: Task[]) => {
+		return tasks.length ? generateKeyBetween(tasks.at(-1)?.order, null) : generateKeyBetween(null, null);
+	};
+
 	const getTaskById = (id: string | null): Task | null => {
 		if (!id) return null;
 
@@ -267,9 +271,7 @@ export const useTaskStore = defineStore('task', () => {
 	const addTask = (taskInput: CreateTaskInput) => {
 		const sameColumnTasks = getTasksByColumnId(taskInput.columnId);
 
-		const order = sameColumnTasks.length
-			? generateKeyBetween(sameColumnTasks.at(-1)?.order, null)
-			: generateKeyBetween(null, null);
+		const order = generateOrder(sameColumnTasks);
 
 		tasks.value.push({
 			...taskInput,
@@ -293,15 +295,21 @@ export const useTaskStore = defineStore('task', () => {
 	};
 
 	const updateTask = ({ title, id, priority, columnId, description, dueDate }: EditTaskInput) => {
-		// TODO: допрацювати - коли перенос в іншу колонку - змінити order?
 		const task = tasks.value.find((task) => task.id === id);
 		if (!task) return false;
+
+		if (task.columnId !== columnId) {
+			const tasksNewCol = getTasksByColumnId(columnId);
+
+			task.order = generateOrder(tasksNewCol);
+		}
 
 		task.title = title;
 		task.priority = priority;
 		task.columnId = columnId;
 		task.description = description;
 		task.dueDate = dueDate;
+
 		return true;
 	};
 
