@@ -10,7 +10,7 @@
 			@edit-finish-confirm="handleEditFinishConfirm"
 			:task="taskDetails"
 			:isEditing
-			:columnIds="currentBoard?.columnIds"
+			:columns="columns"
 		/>
 
 		<ConfirmModal
@@ -27,6 +27,7 @@
 	lang="ts"
 >
 	import { useBoardStore } from '@entities/board';
+	import { useColumnStore } from '@entities/column';
 	import { type EditTaskInput, useTaskStore } from '@entities/task';
 	import ConfirmModal from '@features/ViewTaskDetails/ui/ConfirmModal.vue';
 	import { BaseModal } from '@shared/ui/BaseModal';
@@ -42,6 +43,9 @@
 
 	const boardStore = useBoardStore();
 	const { currentBoard } = storeToRefs(boardStore);
+	const { getColumnsByBoardId } = useColumnStore();
+
+	const columns = computed(() => getColumnsByBoardId(currentBoard.value?.id));
 
 	const { isOpen, taskDetails } = storeToRefs(viewTaskDetailsStore);
 

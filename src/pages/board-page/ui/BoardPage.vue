@@ -73,7 +73,7 @@
 	const boardStore = useBoardStore();
 	const { setCurrentBoardId, resetCurrentBoardId } = boardStore;
 	const { currentBoard } = storeToRefs(boardStore);
-	const { getColumnsByIds } = useColumnStore();
+	const { getColumnsByBoardId } = useColumnStore();
 	const { getTasksByColumnId } = useTaskStore();
 	const viewTaskDetailsStore = useViewTaskDetailsStore();
 
@@ -90,7 +90,7 @@
 
 	onUnmounted(() => resetCurrentBoardId());
 
-	const boardColumns = computed(() => getColumnsByIds(currentBoard.value?.columnIds));
+	const boardColumns = computed(() => getColumnsByBoardId(currentBoard.value?.id));
 
 	const { query, activeFilters, toggleFilter, resetActiveFilters, hasActiveFilters, filterTasks, isAnyFilterActive } =
 		useFilter();
