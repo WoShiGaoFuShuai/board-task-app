@@ -140,7 +140,7 @@
 	import { computed, reactive, watch } from 'vue';
 
 	const { currentBoard } = storeToRefs(useBoardStore());
-	const { getColumnsByIds } = useColumnStore();
+	const { getColumnsByBoardId } = useColumnStore();
 
 	const emit = defineEmits<{
 		submit: [data: CreateTaskInput];
@@ -163,7 +163,7 @@
 
 	const todayDate = computed(() => new Date().toISOString().split('T')[0]);
 
-	const columns = computed(() => getColumnsByIds(currentBoard.value?.columnIds));
+	const columns = computed(() => getColumnsByBoardId(currentBoard.value?.id));
 
 	const form = reactive<CreateTaskInput>({
 		title: '',

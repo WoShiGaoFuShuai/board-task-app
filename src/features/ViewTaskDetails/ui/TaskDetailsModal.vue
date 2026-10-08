@@ -87,7 +87,7 @@
 			</span>
 
 			<div
-				v-if="isEditing && columnIds"
+				v-if="isEditing && columns.length"
 				class="chip-select-wrapper"
 			>
 				<select
@@ -96,11 +96,11 @@
 					aria-label="Column"
 				>
 					<option
-						v-for="(option, i) in columnIds"
+						v-for="(option, i) in columns"
 						:key="i"
-						:value="option"
+						:value="option.id"
 					>
-						{{ option }}
+						{{ option.title }}
 					</option>
 				</select>
 			</div>
@@ -111,6 +111,7 @@
 				<div class="i-lucide-circle-dot text-xs" />
 				{{ task.columnId }}
 			</span>
+			<!-- TODO: Зробити щоб показувався title у col, а не id -->
 		</div>
 
 		<section class="modal-body">
@@ -188,6 +189,7 @@
 	setup
 	lang="ts"
 >
+	import type { Column } from '@entities/column';
 	import { type EditTaskInput, TASK_PRIORITIES, type Task } from '@entities/task';
 	import { ButtonIcon, ButtonSize, ButtonType } from '@shared/ui/ButtonIcon';
 	import { computed, reactive, watch } from 'vue';
@@ -204,7 +206,7 @@
 	const props = defineProps<{
 		task: Task;
 		isEditing: boolean;
-		columnIds?: string[];
+		columns: Column[];
 	}>();
 
 	const formatDate = (dateStr: string | null): string => {

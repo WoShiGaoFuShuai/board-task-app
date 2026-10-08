@@ -7,32 +7,35 @@ export const useColumnStore = defineStore('column', () => {
 		{
 			id: 'col-1',
 			title: 'To Do',
+			boardId: 'board-1',
 		},
 		{
 			id: 'col-2',
 			title: 'In Progress',
+			boardId: 'board-1',
 		},
 		{
 			id: 'col-3',
 			title: 'Done',
+			boardId: 'board-1',
 		},
 		{
 			id: 'col-4',
 			title: 'Backlog',
+			boardId: 'board-2',
 		},
 		{
 			id: 'col-5',
 			title: 'In Review',
+			boardId: 'board-2',
 		},
 	]);
 
-	const getColumnsByIds = (ids: string[] | undefined): Column[] => {
-		if (!ids) return [];
+	const getColumnsByBoardId = (id: string | undefined): Column[] => {
+		if (!id) return [];
 
-		return ids
-			.map((colId: string) => columns.value.find((c: Column) => c.id === colId))
-			.filter((c: Column | undefined) => c !== undefined);
+		return columns.value.filter((c: Column) => c.boardId === id);
 	};
 
-	return { getColumnsByIds, columns };
+	return { getColumnsByBoardId, columns };
 });
