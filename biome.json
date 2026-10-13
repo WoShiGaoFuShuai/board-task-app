@@ -17,7 +17,7 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"includes": ["src/**", "*.config.{js,ts,mjs,cjs}", "vite.config.*"]
+		"includes": ["src/**", "server/src/**", "*.config.{js,ts,mjs,cjs}", "vite.config.*"]
 	},
 	"formatter": {
 		"enabled": true,
