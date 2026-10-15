@@ -1,10 +1,14 @@
 import { serve } from '@hono/node-server';
 import { eq, inArray } from 'drizzle-orm';
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
 import { db } from './db';
 import { boardsTable, columnsTable, tasksTable } from './db/schema';
 
 const app = new Hono();
+
+// TODO: коли виллю на прод додати origin, creds і тд
+app.use('/api/*', cors());
 
 app.get('/api/boards', async (c) => {
 	const boards = await db.select().from(boardsTable);

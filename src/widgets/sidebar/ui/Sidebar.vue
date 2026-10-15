@@ -16,7 +16,7 @@
 			>
 				<div class="i-lucide-kanban text-base" />
 				<span class="truncate">{{ board.title }}</span>
-				<span class="ml-auto text-xs opacity-50"> {{ getColumnsByBoardId(board.id).length }} </span>
+				<span class="ml-auto text-xs opacity-50"> {{ board.length }} </span>
 			</RouterLink>
 		</nav>
 
@@ -37,9 +37,6 @@
 	lang="ts"
 >
 	import { useBoardStore } from '@entities/board';
-	import { useColumnStore } from '@entities/column';
-
-	const { getColumnsByBoardId } = useColumnStore();
 
 	const boardStore = useBoardStore();
 </script>

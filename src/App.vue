@@ -9,5 +9,13 @@
 	setup
 	lang="ts"
 >
+	import { useBoardStore } from '@entities/board';
 	import { Sidebar } from '@widgets/sidebar';
+	import { onMounted } from 'vue';
+
+	const boardStore = useBoardStore();
+
+	onMounted(() => {
+		boardStore.fetchBoardsWithLength();
+	});
 </script>
