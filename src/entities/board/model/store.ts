@@ -1,35 +1,41 @@
+import { getBoardFullInfo } from '@entities/board/api/getBoardFullInfo.ts';
+import { getBoardsWithLength } from '@entities/board/api/getBoardsWithLength.ts';
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
-import type { Board } from './types';
+import { shallowRef } from 'vue';
+import type { Board, BoardWithLength } from './types';
 
 export const useBoardStore = defineStore('board', () => {
-	const boards = ref<Board[]>([
-		{
-			id: 'board-1',
-			title: 'Frontend Project',
-		},
-		{
-			id: 'board-2',
-			title: 'Marketing Campaign',
-		},
-		{
-			id: 'board-3',
-			title: 'Other Tasks',
-		},
-	]);
+	const boards = shallowRef<BoardWithLength[]>([]);
 
-	const currentBoardId = ref<null | string>(null);
-
-	const setCurrentBoardId = (id: string) => {
-		const exists = boards.value.some((b) => b.id === id);
-		currentBoardId.value = exists ? id : null;
+	const resetCurrentBoard = () => {
+		currentBoard.value = null;
 	};
 
-	const resetCurrentBoardId = () => {
-		currentBoardId.value = null;
+	const fetchBoardFullInfo = async (id: string) => {
+		// TODO: ADD Loading state use vueuse?
+		try {
+			const res = await getBoardFullInfo(id);
+			console.log(res);
+
+			currentBoard.value = res.board;
+		} catch (error) {
+			throw error;
+		}
 	};
 
-	const currentBoard = computed(() => boards.value.find((board) => board.id === currentBoardId.value));
+	const fetchBoardsWithLength = async () => {
+		// TODO: ADD Loading state use vueuse?
+		try {
+			const res = await getBoardsWithLength();
+			console.log(res);
 
-	return { boards, currentBoard, setCurrentBoardId, resetCurrentBoardId };
+			boards.value = res.boards;
+		} catch (error) {
+			throw error;
+		}
+	};
+
+	const currentBoard = shallowRef<Board | null>(null);
+
+	return { boards, currentBoard, fetchBoardFullInfo, resetCurrentBoard, fetchBoardsWithLength };
 });

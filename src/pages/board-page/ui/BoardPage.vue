@@ -71,7 +71,7 @@
 
 	const route = useRoute();
 	const boardStore = useBoardStore();
-	const { setCurrentBoardId, resetCurrentBoardId } = boardStore;
+	const { resetCurrentBoard, fetchBoardFullInfo } = boardStore;
 	const { currentBoard } = storeToRefs(boardStore);
 	const { getColumnsByBoardId } = useColumnStore();
 	const { getTasksByColumnId } = useTaskStore();
@@ -85,10 +85,12 @@
 	});
 
 	watchEffect(() => {
-		setCurrentBoardId(paramsId.value);
+		if (!paramsId.value) return;
+
+		fetchBoardFullInfo(paramsId.value);
 	});
 
-	onUnmounted(() => resetCurrentBoardId());
+	onUnmounted(() => resetCurrentBoard());
 
 	const boardColumns = computed(() => getColumnsByBoardId(currentBoard.value?.id));
 
