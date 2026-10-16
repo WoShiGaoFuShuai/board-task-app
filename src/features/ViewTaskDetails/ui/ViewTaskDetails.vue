@@ -26,7 +26,6 @@
 	setup
 	lang="ts"
 >
-	import { useBoardStore } from '@entities/board';
 	import { useColumnStore } from '@entities/column';
 	import { type EditTaskInput, useTaskStore } from '@entities/task';
 	import ConfirmModal from '@features/ViewTaskDetails/ui/ConfirmModal.vue';
@@ -41,11 +40,7 @@
 	const viewTaskDetailsStore = useViewTaskDetailsStore();
 	const { updateTask } = useTaskStore();
 
-	const boardStore = useBoardStore();
-	const { currentBoard } = storeToRefs(boardStore);
-	const { getColumnsByBoardId } = useColumnStore();
-
-	const columns = computed(() => getColumnsByBoardId(currentBoard.value?.id));
+	const { columns } = storeToRefs(useColumnStore());
 
 	const { isOpen, taskDetails } = storeToRefs(viewTaskDetailsStore);
 
