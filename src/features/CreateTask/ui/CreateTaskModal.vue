@@ -132,15 +132,13 @@
 	setup
 	lang="ts"
 >
-	import { useBoardStore } from '@entities/board';
 	import { useColumnStore } from '@entities/column';
 	import type { CreateTaskInput, TaskPriority } from '@entities/task';
 	import { ButtonColor, ButtonIcon, ButtonSize, ButtonType } from '@shared/ui/ButtonIcon';
 	import { storeToRefs } from 'pinia';
 	import { computed, reactive, watch } from 'vue';
 
-	const { currentBoard } = storeToRefs(useBoardStore());
-	const { getColumnsByBoardId } = useColumnStore();
+	const { columns } = storeToRefs(useColumnStore());
 
 	const emit = defineEmits<{
 		submit: [data: CreateTaskInput];
@@ -162,8 +160,6 @@
 	};
 
 	const todayDate = computed(() => new Date().toISOString().split('T')[0]);
-
-	const columns = computed(() => getColumnsByBoardId(currentBoard.value?.id));
 
 	const form = reactive<CreateTaskInput>({
 		title: '',

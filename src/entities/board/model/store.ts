@@ -1,10 +1,13 @@
 import { getBoardFullInfo } from '@entities/board/api/getBoardFullInfo.ts';
 import { getBoardsWithLength } from '@entities/board/api/getBoardsWithLength.ts';
+import { useColumnStore } from '@entities/column';
 import { defineStore } from 'pinia';
 import { shallowRef } from 'vue';
 import type { Board, BoardWithLength } from './types';
 
 export const useBoardStore = defineStore('board', () => {
+	const columnStore = useColumnStore();
+
 	const boards = shallowRef<BoardWithLength[]>([]);
 
 	const resetCurrentBoard = () => {
@@ -18,6 +21,7 @@ export const useBoardStore = defineStore('board', () => {
 			console.log(res);
 
 			currentBoard.value = res.board;
+			columnStore.setColumns(res.columns);
 		} catch (error) {
 			throw error;
 		}

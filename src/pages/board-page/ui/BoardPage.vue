@@ -14,7 +14,7 @@
 				@reset-filters="resetActiveFilters"
 				:hasActiveFilters
 				:activeFilters
-				:columns="boardColumns"
+				:columns
 				class="board-filter-bar"
 			/>
 
@@ -23,7 +23,7 @@
 			<!--            // TODO: add create columns logic, if there is no columns - cant create task-->
 
 			<section
-				v-if="!boardColumns.length"
+				v-if="!columns.length"
 				class="board-empty"
 			>
 				<div class="i-lucide-columns-3 text-3xl text-surface-600 mb-3" />
@@ -71,9 +71,12 @@
 
 	const route = useRoute();
 	const boardStore = useBoardStore();
+	const columnsStore = useColumnStore();
 	const { resetCurrentBoard, fetchBoardFullInfo } = boardStore;
 	const { currentBoard } = storeToRefs(boardStore);
-	const { getColumnsByBoardId } = useColumnStore();
+	const { resetColumns } = columnsStore;
+	const { columns } = storeToRefs(columnsStore);
+
 	const { getTasksByColumnId } = useTaskStore();
 	const viewTaskDetailsStore = useViewTaskDetailsStore();
 
@@ -90,15 +93,16 @@
 		fetchBoardFullInfo(paramsId.value);
 	});
 
-	onUnmounted(() => resetCurrentBoard());
-
-	const boardColumns = computed(() => getColumnsByBoardId(currentBoard.value?.id));
+	onUnmounted(() => {
+		resetCurrentBoard();
+		resetColumns();
+	});
 
 	const { query, activeFilters, toggleFilter, resetActiveFilters, hasActiveFilters, filterTasks, isAnyFilterActive } =
 		useFilter();
 
 	const columnsWithTasks = computed(() =>
-		boardColumns.value.map((column) => {
+		columns.value.map((column) => {
 			const allTasks = getTasksByColumnId(column.id);
 
 			const tasks = filterTasks(allTasks);
