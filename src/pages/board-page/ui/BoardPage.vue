@@ -71,11 +71,11 @@
 
 	const route = useRoute();
 	const boardStore = useBoardStore();
-	const columnsStore = useColumnStore();
+	const columnStore = useColumnStore();
 	const { resetCurrentBoard, fetchBoardFullInfo } = boardStore;
 	const { currentBoard } = storeToRefs(boardStore);
-	const { resetColumns } = columnsStore;
-	const { columns } = storeToRefs(columnsStore);
+	const { resetColumns } = columnStore;
+	const { columns } = storeToRefs(columnStore);
 
 	const { getTasksByColumnId } = useTaskStore();
 	const viewTaskDetailsStore = useViewTaskDetailsStore();

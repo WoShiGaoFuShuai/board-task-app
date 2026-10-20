@@ -121,8 +121,9 @@
 				class="btn-primary"
 				type="button"
 				@click="handleSubmit"
+				:disabled="isSubmitting"
 			>
-				Create Task
+				{{ btnText }}
 			</button>
 		</div>
 	</dialog>
@@ -145,11 +146,19 @@
 		close: [];
 	}>();
 
+	const props = defineProps<{
+		isSubmitting: boolean;
+	}>();
+
 	const PRIORITIES = [
 		{ value: 'low' as const, label: 'Low' },
 		{ value: 'medium' as const, label: 'Medium' },
 		{ value: 'high' as const, label: 'High' },
 	];
+
+	const btnText = computed(() => {
+		return props.isSubmitting ? 'Creating...' : 'Create Task';
+	});
 
 	const showCalendar = (e: MouseEvent) => {
 		try {
@@ -394,5 +403,10 @@
 
 	.btn-primary:active {
 		background-color: var(--colors-primary-600);
+	}
+
+	.btn-primary:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
 	}
 </style>
