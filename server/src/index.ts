@@ -85,11 +85,24 @@ app.post('/api/tasks', async (c) => {
 		assigneesId: JSON.stringify(rawReq.assigneesId),
 	};
 
-	await db.insert(tasksTable).values(normalizedReq);
+	const [task] = await db.insert(tasksTable).values(normalizedReq).returning();
 
-	return c.json({ ok: true, message: 'Task was added' }, 201);
+	if (task) {
+		return c.json(
+			{
+				ok: true,
+				message: 'Task was added',
+				task: {
+					...task,
+					assigneesId: JSON.parse(task.assigneesId),
+				},
+			},
+			201
+		);
+	} else {
+		return c.json({ ok: false, message: 'Task was not added' }, 500);
+	}
 
-	// TODO: повертати створену задачу
 	// TODO: валідація через Zod
 });
 
