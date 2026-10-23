@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
 export const useViewTaskDetailsStore = defineStore('viewTaskDetails', () => {
-	const { getTaskById, deleteTask } = useTaskStore();
+	const { getTaskById, removeTask } = useTaskStore();
 
 	const isOpen = ref(false);
 	const taskId = ref<null | string>(null);
@@ -19,9 +19,15 @@ export const useViewTaskDetailsStore = defineStore('viewTaskDetails', () => {
 		taskId.value = null;
 	};
 
-	const deleteCurrentTask = () => {
+	const deleteCurrentTask = async () => {
 		if (!taskId.value) return false;
-		return deleteTask(taskId.value);
+		try {
+			await removeTask(taskId.value);
+			return true;
+		} catch (error) {
+			console.error(error);
+			return false;
+		}
 	};
 
 	return { isOpen, open, taskDetails, closeModal, deleteCurrentTask };

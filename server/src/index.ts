@@ -134,7 +134,7 @@ app.delete('/api/tasks/:id', async (c) => {
 
 	const res = await db.delete(tasksTable).where(eq(tasksTable.id, id));
 
-	if (res.changes === 0) return c.json({ ok: false, message: 'Could not delete tasks' }, 404);
+	if (res.changes === 0) return c.json({ ok: false, message: 'Task not found' }, 404);
 
 	return c.json({ ok: true, message: 'Task is deleted' });
 });
