@@ -1,6 +1,9 @@
 <template>
 	<Teleport to="body">
-		<section class="modal-section">
+		<section
+			class="modal-section"
+			:class="{'is-loading': isLoading}"
+		>
 			<div ref="target"><slot></slot></div>
 		</section>
 	</Teleport>
@@ -16,6 +19,10 @@
 
 	const emit = defineEmits<{
 		close: [];
+	}>();
+
+	defineProps<{
+		isLoading?: boolean;
 	}>();
 
 	const isLocked = useScrollLock(document.body);
@@ -43,5 +50,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	.modal-section.is-loading {
+		cursor: not-allowed;
 	}
 </style>

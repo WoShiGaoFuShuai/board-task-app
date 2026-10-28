@@ -28,4 +28,4 @@ lerna-debug.log*
 .DS_Store
 
 #database
-.database.db
+database.db

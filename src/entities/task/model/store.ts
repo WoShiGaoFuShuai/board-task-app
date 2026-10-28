@@ -1,5 +1,6 @@
 import { createTask } from '@entities/task/api/createTask.ts';
 import { deleteTask } from '@entities/task/api/deleteTask.ts';
+import { updateTask as updateTaskApi } from '@entities/task/api/updateTask.ts';
 import { generateKeyBetween } from 'fractional-indexing';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
@@ -63,24 +64,20 @@ export const useTaskStore = defineStore('task', () => {
 		tasks.value = tasks.value.filter((t) => t.id !== id);
 	};
 
-	// TODO: тут додати api
-	const updateTask = ({ title, id, priority, columnId, description, dueDate }: EditTaskInput) => {
-		const task = tasks.value.find((task) => task.id === id);
-		if (!task) return false;
+	const updateTask = async (taskInput: EditTaskInput) => {
+		const task = tasks.value.find((task) => task.id === taskInput.id);
+		if (!task) throw new Error('Task was not found');
 
-		if (task.columnId !== columnId) {
-			const tasksNewCol = getTasksByColumnId(columnId);
+		const order =
+			task.columnId === taskInput.columnId ? task.order : generateOrder(getTasksByColumnId(taskInput.columnId));
 
-			task.order = generateOrder(tasksNewCol);
-		}
+		const payload = { ...taskInput, order };
 
-		task.title = title;
-		task.priority = priority;
-		task.columnId = columnId;
-		task.description = description;
-		task.dueDate = dueDate;
+		await updateTaskApi(payload);
 
-		return true;
+		const current = getTaskById(taskInput.id);
+		if (!current) throw new Error('Task was not found');
+		Object.assign(current, payload);
 	};
 
 	return {

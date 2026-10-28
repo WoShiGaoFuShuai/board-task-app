@@ -4,6 +4,7 @@
 		role="dialog"
 		aria-modal="true"
 		aria-labelledby="task-details-title"
+		:inert="isLoading"
 	>
 		<header class="modal-header">
 			<div class="modal-title-block">
@@ -29,7 +30,7 @@
 				class="btn-save"
 				@click="editTaskConfirm"
 			>
-				Save
+				{{ btnSaveText }}
 			</button>
 			<ButtonIcon
 				v-else
@@ -206,8 +207,11 @@
 	const props = defineProps<{
 		task: Task;
 		isEditing: boolean;
+		isLoading: boolean;
 		columns: Column[];
 	}>();
+
+	const btnSaveText = computed(() => (props.isLoading ? 'Saving' : 'Save'));
 
 	const formatDate = (dateStr: string | null): string => {
 		if (!dateStr) return '';
