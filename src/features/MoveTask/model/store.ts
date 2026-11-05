@@ -21,28 +21,34 @@ export const useMoveTaskStore = defineStore('moveTask', () => {
 		return adjacent?.order ?? null;
 	};
 
-	const moveTask = (payload: MoveTaskPayload) => {
+	const moveTask = async (payload: MoveTaskPayload) => {
 		const { itemId, columnIdTo, prevSiblingId, nextSiblingId } = payload;
 
-		if (prevSiblingId) {
-			const realPrev = getTaskById(prevSiblingId);
-			if (!realPrev) throw new Error('Can not find the previous task');
+		let newOrder = '';
 
-			const realNextOrder = findSiblingOrder(realPrev, columnIdTo, SIBLINGS.NEXT);
-			const newOrder = generateKeyBetween(realPrev.order, realNextOrder);
-			changeTaskOrderAndColumn(itemId, newOrder, columnIdTo);
-		} else if (nextSiblingId) {
-			const realNext = getTaskById(nextSiblingId);
-			if (!realNext) throw new Error('Can not find the next task');
+		try {
+			if (prevSiblingId) {
+				const realPrev = getTaskById(prevSiblingId);
+				if (!realPrev) throw new Error('Can not find the previous task');
 
-			const realPrevOrder = findSiblingOrder(realNext, columnIdTo, SIBLINGS.PREV);
-			const newOrder = generateKeyBetween(realPrevOrder, realNext.order);
-			changeTaskOrderAndColumn(itemId, newOrder, columnIdTo);
-		} else {
-			const newOrder = generateKeyBetween(null, null);
-			changeTaskOrderAndColumn(itemId, newOrder, columnIdTo);
+				const realNextOrder = findSiblingOrder(realPrev, columnIdTo, SIBLINGS.NEXT);
+				newOrder = generateKeyBetween(realPrev.order, realNextOrder);
+			} else if (nextSiblingId) {
+				const realNext = getTaskById(nextSiblingId);
+				if (!realNext) throw new Error('Can not find the next task');
+
+				const realPrevOrder = findSiblingOrder(realNext, columnIdTo, SIBLINGS.PREV);
+				newOrder = generateKeyBetween(realPrevOrder, realNext.order);
+			} else {
+				newOrder = generateKeyBetween(null, null);
+			}
+
+			await changeTaskOrderAndColumn(itemId, newOrder, columnIdTo);
+		} catch (error) {
+			// TODO: ADD TOAST FOR ERROR and explain that task was put back
+			console.error('UI', error);
+			return;
 		}
-		//TODO: додати пізніше toast error
 	};
 
 	return { moveTask };

@@ -1,9 +1,7 @@
-import type { EditTaskInput } from '@entities/task';
+import type { Task } from '@entities/task';
 import { API_BASE_URL } from '@shared/api/config.ts';
 
-export interface UpdateTaskPayload extends EditTaskInput {
-	order: string;
-}
+type UpdateTaskPayload = Omit<Partial<Task>, 'id'> & Pick<Task, 'id'>;
 
 export const updateTask = async (task: UpdateTaskPayload) => {
 	const response = await fetch(`${API_BASE_URL}/api/tasks/${task.id}`, {

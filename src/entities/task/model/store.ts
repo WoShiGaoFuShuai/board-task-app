@@ -31,13 +31,25 @@ export const useTaskStore = defineStore('task', () => {
 			.sort((a: Task, b: Task) => (a.order < b.order ? -1 : a.order > b.order ? 1 : 0));
 	};
 
-	// TODO: тут додати api
-	const changeTaskOrderAndColumn = (id: string, order: string, colId: string) => {
+	// TODO: подумати, order варто перенести на бек?
+	const changeTaskOrderAndColumn = async (id: string, order: string, colId: string) => {
 		const task = getTaskById(id);
 		if (!task) return;
 
+		const oldOrder = task.order;
+		const oldColumnId = task.columnId;
+
 		task.order = order;
 		task.columnId = colId;
+
+		//TODO: подумати потім про гонку запитів при кількох швидких перетягуваннях.
+		try {
+			await updateTaskApi({ id, order, columnId: colId });
+		} catch (error) {
+			task.order = oldOrder;
+			task.columnId = oldColumnId;
+			throw error;
+		}
 	};
 
 	const addTask = async (taskInput: CreateTaskInput) => {
