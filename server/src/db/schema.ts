@@ -14,11 +14,16 @@ export const columnsTable = sqliteTable('columns', {
 export const tasksTable = sqliteTable('tasks', {
 	columnId: text().notNull(),
 	order: text().notNull(),
-	id: text().notNull().primaryKey(),
+	id: text()
+		.notNull()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	title: text().notNull(),
 	description: text(),
 	priority: text().$type<'low' | 'medium' | 'high'>(),
-	createdAt: text().notNull(),
+	createdAt: text()
+		.notNull()
+		.$defaultFn(() => new Date().toISOString()),
 	assigneesId: text().notNull(),
 	dueDate: text(),
 });

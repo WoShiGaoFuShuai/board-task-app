@@ -1,12 +1,14 @@
 import { getBoardFullInfo } from '@entities/board/api/getBoardFullInfo.ts';
 import { getBoardsWithLength } from '@entities/board/api/getBoardsWithLength.ts';
 import { useColumnStore } from '@entities/column';
+import { useTaskStore } from '@entities/task';
 import { defineStore } from 'pinia';
 import { shallowRef } from 'vue';
 import type { Board, BoardWithLength } from './types';
 
 export const useBoardStore = defineStore('board', () => {
 	const columnStore = useColumnStore();
+	const taskStore = useTaskStore();
 
 	const boards = shallowRef<BoardWithLength[]>([]);
 
@@ -22,6 +24,7 @@ export const useBoardStore = defineStore('board', () => {
 
 			currentBoard.value = res.board;
 			columnStore.setColumns(res.columns);
+			taskStore.setTasks(res.tasks);
 		} catch (error) {
 			throw error;
 		}

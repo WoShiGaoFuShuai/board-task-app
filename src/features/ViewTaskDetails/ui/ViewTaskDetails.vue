@@ -2,6 +2,7 @@
 	<BaseModal
 		v-if="isOpen && taskDetails"
 		@close="handleCloseModal"
+		:isLoading
 	>
 		<TaskDetailsModal
 			@close-modal="handleCloseModal"
@@ -10,6 +11,7 @@
 			@edit-finish-confirm="handleEditFinishConfirm"
 			:task="taskDetails"
 			:isEditing
+			:isLoading
 			:columns="columns"
 		/>
 
@@ -45,6 +47,7 @@
 	const { isOpen, taskDetails } = storeToRefs(viewTaskDetailsStore);
 
 	const isEditing = ref(false);
+	const isLoading = ref(false);
 
 	const confirmModalContext = shallowRef<ModalContext>({
 		...MODAL_CONTEXT.empty,
@@ -79,13 +82,17 @@
 		resetConfirmModalContext();
 	};
 
-	const handleConfirm = () => {
+	const handleConfirm = async () => {
 		if (confirmModalContext.value.type === 'delete') {
 			// TODO: потім додати toast а при error не закривати модалку
-			const success = viewTaskDetailsStore.deleteCurrentTask();
+			const success = await viewTaskDetailsStore.deleteCurrentTask();
 			if (success)
 				console.log('deleted'); // TODO: toast
-			else console.log('error'); // TODO: toast
+			else {
+				// TODO: toast
+				console.log('error');
+				return;
+			}
 		}
 
 		reset();
@@ -93,6 +100,8 @@
 	};
 
 	const handleCloseModal = () => {
+		if (isLoading.value) return;
+
 		if (isEditing.value) {
 			openConfirmEditModal();
 			return;
@@ -102,15 +111,19 @@
 		viewTaskDetailsStore.closeModal();
 	};
 
-	const handleEditFinishConfirm = (editTaskPayload: EditTaskInput) => {
+	const handleEditFinishConfirm = async (editTaskPayload: EditTaskInput) => {
+		if (isLoading.value) return;
+		isLoading.value = true;
 		// TODO: продумати потім якщо одракові дані - не змінювати
-
-		const res = updateTask(editTaskPayload);
-
-		//TODO: ADD SUCCESS TOAST
-		if (res) console.log('success');
-		else console.log('error');
-
-		isEditing.value = false;
+		try {
+			await updateTask(editTaskPayload);
+			isEditing.value = false;
+			//TODO: ADD SUCCESS TOAST
+		} catch (e) {
+			console.error(e);
+			// TODO: ADD ERROR TOAST
+		} finally {
+			isLoading.value = false;
+		}
 	};
 </script>

@@ -13,6 +13,7 @@
 			<CreateTaskModal
 				@close="openCreateTaskModal = false"
 				@submit="submit"
+				:isSubmitting
 			/>
 		</BaseModal>
 	</div>
@@ -32,9 +33,20 @@
 	const taskStore = useTaskStore();
 	const openCreateTaskModal = ref(false);
 
-	const submit = (payload: CreateTaskInput) => {
-		taskStore.addTask(payload);
-		openCreateTaskModal.value = false;
+	const isSubmitting = ref(false);
+
+	const submit = async (payload: CreateTaskInput) => {
+		if (isSubmitting.value) return;
+		isSubmitting.value = true;
+
+		try {
+			await taskStore.addTask(payload);
+			openCreateTaskModal.value = false;
+		} catch (err) {
+			console.log(err);
+		} finally {
+			isSubmitting.value = false;
+		}
 
 		//TODO: Add toast for success/failute
 	};
