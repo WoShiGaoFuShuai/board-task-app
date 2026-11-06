@@ -1,8 +1,9 @@
 <template>
 	<Teleport to="body">
-		<div
+		<TransitionGroup
+			tag="div"
+			name="toast"
 			class="toasts"
-			v-if="toasts.length"
 		>
 			<ToastEl
 				v-for="toast in toasts"
@@ -10,7 +11,7 @@
 				:toast
 				@close="toastStore.removeToast($event)"
 			/>
-		</div>
+		</TransitionGroup>
 	</Teleport>
 </template>
 
@@ -30,11 +31,31 @@
 	.toasts {
 		position: fixed;
 		z-index: 999;
-		bottom: 20px;
 		right: 20px;
+		bottom: 20px;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
-		gap: 16px;
+		gap: 12px;
+		max-width: 360px;
+	}
+
+	.toast-move,
+	.toast-enter-active,
+	.toast-leave-active {
+		transition:
+			opacity 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	.toast-enter-from,
+	.toast-leave-to {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+
+	.toast-leave-active {
+		position: absolute;
+		right: 0;
 	}
 </style>
