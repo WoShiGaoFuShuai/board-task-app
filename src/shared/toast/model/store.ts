@@ -19,7 +19,7 @@ export const useToastStore = defineStore('toast', () => {
 
 	const removeToast = (id: string) => {
 		const index = toasts.value.findIndex((t) => t.id === id);
-		if (index > -1) return;
+		if (index === -1) return;
 
 		toasts.value.splice(index, 1);
 	};
