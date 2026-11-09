@@ -57,17 +57,12 @@ export const useTaskStore = defineStore('task', () => {
 
 		const order = generateOrder(sameColumnTasks);
 
-		try {
-			const createdTask = await createTask({
-				...taskInput,
-				order,
-			});
+		const createdTask = await createTask({
+			...taskInput,
+			order,
+		});
 
-			tasks.value.push(createdTask);
-		} catch (error) {
-			throw error;
-		}
-		//TODO: add toast
+		tasks.value.push(createdTask);
 	};
 
 	const removeTask = async (id: string) => {
