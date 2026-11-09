@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import type { AddToastPayload, Toast } from './types.ts';
 
-const DEFAULT_TEXT = 'Error';
 const TIMEOUT_MS = 5000;
 
 export const useToastStore = defineStore('toast', () => {
@@ -10,7 +9,7 @@ export const useToastStore = defineStore('toast', () => {
 
 	const addToast = ({ message, type = 'error' }: AddToastPayload) => {
 		const id = crypto.randomUUID();
-		toasts.value.push({ id, message: message?.trim() || DEFAULT_TEXT, type });
+		toasts.value.push({ id, message, type });
 
 		setTimeout(() => {
 			removeToast(id);

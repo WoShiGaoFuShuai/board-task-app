@@ -46,7 +46,7 @@
 			openCreateTaskModal.value = false;
 			toastStore.addToast({ message: 'Task was added successfully!', type: 'success' });
 		} catch (err) {
-			toastStore.addToast({ message: 'Task was not added!' });
+			toastStore.addToast({ message: 'Task was not added!', type: 'error' });
 			console.error('[CreateTask]', err);
 		} finally {
 			isSubmitting.value = false;

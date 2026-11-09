@@ -7,6 +7,6 @@ export interface Toast {
 }
 
 export interface AddToastPayload {
-	message?: string;
+	message: string;
 	type?: ToastType;
 }
