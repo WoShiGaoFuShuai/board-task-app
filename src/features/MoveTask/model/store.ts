@@ -48,8 +48,7 @@ export const useMoveTaskStore = defineStore('moveTask', () => {
 			await changeTaskOrderAndColumn(itemId, newOrder, columnIdTo);
 		} catch (error) {
 			console.error('[moveTask]', error);
-			addToast({ message: 'There was an error, task was returned to previous state' });
-			return;
+			addToast({ message: 'Could not move the task' });
 		}
 	};
 
