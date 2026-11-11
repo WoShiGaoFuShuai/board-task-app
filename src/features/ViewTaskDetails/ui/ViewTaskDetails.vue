@@ -31,6 +31,7 @@
 	import { useColumnStore } from '@entities/column';
 	import { type EditTaskInput, useTaskStore } from '@entities/task';
 	import ConfirmModal from '@features/ViewTaskDetails/ui/ConfirmModal.vue';
+	import { useToastStore } from '@shared/toast';
 	import { BaseModal } from '@shared/ui/BaseModal';
 	import { storeToRefs } from 'pinia';
 	import { computed, ref, shallowRef } from 'vue';
@@ -41,6 +42,7 @@
 
 	const viewTaskDetailsStore = useViewTaskDetailsStore();
 	const { updateTask } = useTaskStore();
+	const { addToast } = useToastStore();
 
 	const { columns } = storeToRefs(useColumnStore());
 
@@ -84,14 +86,19 @@
 
 	const handleConfirm = async () => {
 		if (confirmModalContext.value.type === 'delete') {
-			// TODO: потім додати toast а при error не закривати модалку
-			const success = await viewTaskDetailsStore.deleteCurrentTask();
-			if (success)
-				console.log('deleted'); // TODO: toast
-			else {
-				// TODO: toast
-				console.log('error');
+			if (isLoading.value) return;
+			isLoading.value = true;
+
+			try {
+				await viewTaskDetailsStore.deleteCurrentTask();
+				addToast({ message: 'Task was deleted successfully.', type: 'success' });
+			} catch (e) {
+				console.error('[deleteTask]', e);
+				addToast({ message: 'Task was not deleted.', type: 'error' });
+				resetConfirmModalContext();
 				return;
+			} finally {
+				isLoading.value = false;
 			}
 		}
 
@@ -118,10 +125,10 @@
 		try {
 			await updateTask(editTaskPayload);
 			isEditing.value = false;
-			//TODO: ADD SUCCESS TOAST
+			addToast({ message: 'Task was edited successfully.', type: 'success' });
 		} catch (e) {
 			console.error(e);
-			// TODO: ADD ERROR TOAST
+			addToast({ message: 'Task was not edited.', type: 'error' });
 		} finally {
 			isLoading.value = false;
 		}

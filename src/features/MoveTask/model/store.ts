@@ -1,3 +1,4 @@
+import { useToastStore } from '@shared/toast';
 import { generateKeyBetween } from 'fractional-indexing';
 import { defineStore } from 'pinia';
 import { type Task, useTaskStore } from '@/entities/task';
@@ -10,6 +11,7 @@ const SIBLINGS = {
 
 export const useMoveTaskStore = defineStore('moveTask', () => {
 	const { getTaskById, getTasksByColumnId, changeTaskOrderAndColumn } = useTaskStore();
+	const { addToast } = useToastStore();
 
 	const findSiblingOrder = (task: Task, columnId: string, sibling: (typeof SIBLINGS)[keyof typeof SIBLINGS]) => {
 		const tasks = getTasksByColumnId(columnId);
@@ -45,9 +47,8 @@ export const useMoveTaskStore = defineStore('moveTask', () => {
 
 			await changeTaskOrderAndColumn(itemId, newOrder, columnIdTo);
 		} catch (error) {
-			// TODO: ADD TOAST FOR ERROR and explain that task was put back
-			console.error('UI', error);
-			return;
+			console.error('[moveTask]', error);
+			addToast({ message: 'Could not move the task' });
 		}
 	};
 

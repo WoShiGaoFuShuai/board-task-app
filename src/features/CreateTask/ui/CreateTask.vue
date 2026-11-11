@@ -26,13 +26,15 @@
 	import type { CreateTaskInput } from '@entities/task';
 	import { useTaskStore } from '@entities/task';
 	import CreateTaskModal from '@features/CreateTask/ui/CreateTaskModal.vue';
+	import { useToastStore } from '@shared/toast';
 	import { BaseModal } from '@shared/ui/BaseModal';
 	import { ButtonIcon } from '@shared/ui/ButtonIcon';
 	import { ref } from 'vue';
 
 	const taskStore = useTaskStore();
-	const openCreateTaskModal = ref(false);
+	const toastStore = useToastStore();
 
+	const openCreateTaskModal = ref(false);
 	const isSubmitting = ref(false);
 
 	const submit = async (payload: CreateTaskInput) => {
@@ -42,13 +44,13 @@
 		try {
 			await taskStore.addTask(payload);
 			openCreateTaskModal.value = false;
+			toastStore.addToast({ message: 'Task was added successfully!', type: 'success' });
 		} catch (err) {
-			console.log(err);
+			toastStore.addToast({ message: 'Task was not added!', type: 'error' });
+			console.error('[CreateTask]', err);
 		} finally {
 			isSubmitting.value = false;
 		}
-
-		//TODO: Add toast for success/failute
 	};
 </script>
 
