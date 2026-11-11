@@ -30,7 +30,7 @@
 <style scoped>
 	.toasts {
 		position: fixed;
-		z-index: 999;
+		z-index: 1000;
 		right: 20px;
 		bottom: 20px;
 		display: flex;

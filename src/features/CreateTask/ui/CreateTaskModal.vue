@@ -164,7 +164,7 @@
 		try {
 			(e.currentTarget as HTMLInputElement).showPicker();
 		} catch {
-			// TODO: додати після тоаст з помилкою
+			// showPicker unsupported — native input still works
 		}
 	};
 

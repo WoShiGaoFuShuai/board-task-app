@@ -20,14 +20,8 @@ export const useViewTaskDetailsStore = defineStore('viewTaskDetails', () => {
 	};
 
 	const deleteCurrentTask = async () => {
-		if (!taskId.value) return false;
-		try {
-			await removeTask(taskId.value);
-			return true;
-		} catch (error) {
-			console.error(error);
-			return false;
-		}
+		if (!taskId.value) return;
+		await removeTask(taskId.value);
 	};
 
 	return { isOpen, open, taskDetails, closeModal, deleteCurrentTask };
