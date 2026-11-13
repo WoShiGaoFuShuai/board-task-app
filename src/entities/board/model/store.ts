@@ -18,28 +18,20 @@ export const useBoardStore = defineStore('board', () => {
 
 	const fetchBoardFullInfo = async (id: string) => {
 		// TODO: ADD Loading state use vueuse?
-		try {
-			const res = await getBoardFullInfo(id);
-			console.log(res);
 
-			currentBoard.value = res.board;
-			columnStore.setColumns(res.columns);
-			taskStore.setTasks(res.tasks);
-		} catch (error) {
-			throw error;
-		}
+		const res = await getBoardFullInfo(id);
+
+		currentBoard.value = res.board;
+		columnStore.setColumns(res.columns);
+		taskStore.setTasks(res.tasks);
 	};
 
 	const fetchBoardsWithLength = async () => {
 		// TODO: ADD Loading state use vueuse?
-		try {
-			const res = await getBoardsWithLength();
-			console.log(res);
+		const res = await getBoardsWithLength();
 
-			boards.value = res.boards;
-		} catch (error) {
-			throw error;
-		}
+		console.log(res);
+		boards.value = res.boards;
 	};
 
 	const currentBoard = shallowRef<Board | null>(null);

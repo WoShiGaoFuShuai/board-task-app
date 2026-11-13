@@ -42,11 +42,33 @@
 		</section>
 
 		<section
-			v-else
+			v-else-if="!isLoading"
 			class="board-not-found"
 		>
-			<div class="i-lucide-search-x text-3xl text-surface-600 mb-3" />
-			<p class="text-surface-500 text-sm">Sorry, can't find the board</p>
+			<div
+				:class="errorState.statusCode === 404 ? 'i-lucide-search-x' : 'i-lucide-cloud-off'"
+				class="text-3xl text-surface-600 mb-3"
+			/>
+			<div class="flex flex-col items-center gap-3">
+				<p class="text-surface-500 text-sm">{{ errorState.message }}</p>
+
+				<button
+					v-if="errorState.statusCode !== 404"
+					class="board-retry-btn"
+					type="button"
+					@click="loadBoard(paramsId)"
+				>
+					<div class="i-lucide-rotate-cw text-sm" />
+					<span>Retry</span>
+				</button>
+			</div>
+		</section>
+
+		<section
+			v-else
+			class="board-loading"
+		>
+			<p class="board-loading-text">Loading your board…</p>
 		</section>
 
 		<ViewTaskDetails />
@@ -63,8 +85,9 @@
 	import { CreateTask } from '@features/CreateTask';
 	import { useFilter } from '@features/FilterPanel';
 	import { useViewTaskDetailsStore, ViewTaskDetails } from '@features/ViewTaskDetails';
+	import { ApiError } from '@shared/api/ApiError.ts';
 	import { storeToRefs } from 'pinia';
-	import { computed, onUnmounted, provide, watchEffect } from 'vue';
+	import { computed, onUnmounted, provide, ref, shallowRef, watch } from 'vue';
 	import { useRoute } from 'vue-router';
 	import ColumnList from './components/ColumnList.vue';
 	import FilterBar from './components/FilterBar.vue';
@@ -87,11 +110,50 @@
 		return Array.isArray(id) ? id[0] : id;
 	});
 
-	watchEffect(() => {
-		if (!paramsId.value) return;
-
-		fetchBoardFullInfo(paramsId.value);
+	const isLoading = ref(false);
+	const errorState = shallowRef<{ message: string; statusCode: null | number }>({
+		message: '',
+		statusCode: null,
 	});
+
+	const loadBoard = async (id: string) => {
+		resetCurrentBoard();
+		isLoading.value = true;
+		errorState.value = {
+			message: '',
+			statusCode: null,
+		};
+
+		try {
+			await fetchBoardFullInfo(id);
+		} catch (err) {
+			if (err instanceof ApiError && err.statusCode === 404) {
+				errorState.value = {
+					message: 'Sorry, the board is not found.',
+					statusCode: err.statusCode,
+				};
+
+				return;
+			}
+
+			errorState.value = {
+				message: 'There was an error while fetching board. Try again',
+				statusCode: null,
+			};
+		} finally {
+			isLoading.value = false;
+		}
+	};
+
+	watch(
+		paramsId,
+		async (val) => {
+			if (!val) return;
+
+			await loadBoard(val);
+		},
+		{ immediate: true }
+	);
 
 	onUnmounted(() => {
 		resetCurrentBoard();
@@ -153,12 +215,55 @@
 	}
 
 	.board-empty,
-	.board-not-found {
+	.board-not-found,
+	.board-loading {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		flex: 1;
 		padding: 48px 24px;
+	}
+
+	.board-loading {
+		gap: 12px;
+	}
+
+	.board-loading-text {
+		margin: 0;
+		font-size: 13px;
+		font-weight: 500;
+		color: var(--colors-surface-400);
+	}
+
+	.board-retry-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 8px 14px;
+		border: 1px solid rgba(255, 255, 255, 0.06);
+		border-radius: 8px;
+		background-color: rgba(255, 255, 255, 0.06);
+		color: var(--colors-surface-200);
+		font-size: 13px;
+		font-weight: 500;
+		cursor: pointer;
+		transition:
+			background-color 0.15s ease,
+			color 0.15s ease;
+	}
+
+	.board-retry-btn:hover {
+		background-color: rgba(255, 255, 255, 0.08);
+		color: #fff;
+	}
+
+	.board-retry-btn:active {
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.board-retry-btn:focus-visible {
+		outline: 2px solid var(--colors-primary-400);
+		outline-offset: 2px;
 	}
 </style>
