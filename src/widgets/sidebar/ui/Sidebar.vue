@@ -8,8 +8,44 @@
 		</div>
 
 		<nav class="sidebar-nav">
+			<div
+				v-if="isLoading"
+				class="sidebar-state"
+				role="status"
+			>
+				<div class="i-lucide-loader-circle text-base animate-spin" />
+				<span>Loading boards…</span>
+			</div>
+
+			<div
+				v-else-if="isError"
+				class="sidebar-error"
+			>
+				<div class="sidebar-state">
+					<div class="i-lucide-circle-alert text-base" />
+					<span>Couldn't load boards</span>
+				</div>
+				<button
+					class="sidebar-retry"
+					type="button"
+					@click="loadBoards"
+				>
+					<div class="i-lucide-rotate-cw text-sm" />
+					<span>Retry</span>
+				</button>
+			</div>
+
+			<div
+				v-else-if="!boardStore.boards.length"
+				class="sidebar-state"
+			>
+				<div class="i-lucide-folder-open text-base" />
+				<span>No boards yet. Create one below.</span>
+			</div>
+
 			<RouterLink
 				v-for="board in boardStore.boards"
+				v-else
 				:key="board.id"
 				:to="{ name: 'board', params: { id: board.id } }"
 				class="sidebar-link"
@@ -37,8 +73,29 @@
 	lang="ts"
 >
 	import { useBoardStore } from '@entities/board';
+	import { onMounted, ref } from 'vue';
 
 	const boardStore = useBoardStore();
+
+	const isLoading = ref(false);
+	const isError = ref(false);
+
+	const loadBoards = async () => {
+		if (isLoading.value) return;
+		isLoading.value = true;
+		isError.value = false;
+
+		try {
+			await boardStore.fetchBoardsWithLength();
+		} catch (e) {
+			console.error(e);
+			isError.value = true;
+		} finally {
+			isLoading.value = false;
+		}
+	};
+
+	onMounted(loadBoards);
 </script>
 
 <style scoped>
@@ -88,6 +145,46 @@
 	}
 
 	.router-link-exact-active {
+		background-color: rgba(255, 255, 255, 0.1);
+		color: #fff;
+	}
+
+	.sidebar-state {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 8px 12px;
+		color: var(--colors-surface-500);
+		font-size: 13px;
+		line-height: 1.4;
+	}
+
+	.sidebar-error {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
+	}
+
+	.sidebar-retry {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		margin-left: 12px;
+		padding: 6px 10px;
+		border: none;
+		border-radius: 8px;
+		background-color: rgba(255, 255, 255, 0.05);
+		color: var(--colors-surface-300);
+		font-size: 12px;
+		font-weight: 500;
+		cursor: pointer;
+		transition:
+			background-color 0.15s ease,
+			color 0.15s ease;
+	}
+
+	.sidebar-retry:hover {
 		background-color: rgba(255, 255, 255, 0.1);
 		color: #fff;
 	}

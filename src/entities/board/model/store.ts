@@ -30,7 +30,6 @@ export const useBoardStore = defineStore('board', () => {
 		// TODO: ADD Loading state use vueuse?
 		const res = await getBoardsWithLength();
 
-		console.log(res);
 		boards.value = res.boards;
 	};
 
